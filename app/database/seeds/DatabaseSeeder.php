@@ -9,7 +9,25 @@ class DatabaseSeeder extends Seeder {
 	 */
 	public function run()
 	{
-		// $this->call('UserTableSeeder');
+	  $this->call('UserTableSeeder');
 	}
+
+}
+
+class UserTableSeeder extends Seeder {
+
+  public function run()
+  {
+    User::create(
+      array(
+        'email' => 'admin@admin.com',
+        'password' => Hash::make('admin'),
+        'name' => 'Administrator',
+        'is_admin' => 1,
+        'program_id' => null,
+        'option_id' => null
+      )
+    );
+  }
 
 }
