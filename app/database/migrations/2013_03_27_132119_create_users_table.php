@@ -1,0 +1,37 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+
+class CreateUsersTable extends Migration {
+
+	/**
+	 * Run the migrations.
+	 *
+	 * @return void
+	 */
+	public function up()
+	{
+		Schema::create('users', function($table)
+		{
+      $table->unique('id');
+      $table->string('email');
+      $table->string('password');
+      $table->string('name');
+      $table->integer('is_admin')->default(0);
+      $table->integer('program_id')->nullable();
+      $table->integer('option_id')->nullable();
+      $table->timestamps();
+		});
+	}
+
+	/**
+	 * Reverse the migrations.
+	 *
+	 * @return void
+	 */
+	public function down()
+	{
+		Schema::drop('users');
+	}
+
+}
