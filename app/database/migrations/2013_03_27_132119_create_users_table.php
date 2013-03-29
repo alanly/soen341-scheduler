@@ -12,9 +12,9 @@ class CreateUsersTable extends Migration {
 	public function up()
 	{
 		Schema::create('users', function($table)
-		{
-      $table->unique('id');
-      $table->string('email');
+  {
+      $table->string('id')->unique();
+      $table->string('email')->unique();
       $table->string('password');
       $table->string('name');
       $table->integer('is_admin')->default(0);
