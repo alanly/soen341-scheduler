@@ -13,5 +13,24 @@
 
 Route::get('/', function()
 {
-	return View::make('hello');
+	return View::make('main');
 });
+Route::get('/acedemic', function()
+{
+        return View::make('acedemic');
+});
+Route::get('/admin/users', function()
+{
+        return View::make('admin-users');
+});
+Route::get('/admin/programs', function()
+{
+        return View::make('admin-programs');
+});
+Route::get('/admin/options', function()
+{
+        return View::make('admin-options');
+});
+
+
+
