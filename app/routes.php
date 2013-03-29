@@ -31,6 +31,10 @@ Route::get('/admin/options', function()
 {
         return View::make('admin-options');
 });
+Route::get('/admin/courses', function()
+{
+        return View::make('admin-courses');
+});
 
 
 
