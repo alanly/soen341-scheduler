@@ -18,7 +18,7 @@ Route::get('/', array('before' => 'auth', function()
 }));
 
 // Route for `login` GET
-Route::get('/login', array('before' => 'guest', function()
+Route::get('/login', array('as' => 'login', 'before' => 'guest', function()
 {
   return View::make('login');
 }));
@@ -45,7 +45,7 @@ Route::get('/logout', function()
 });
 
 // Route for `register` GET
-Route::get('/register', array('before' => 'guest', function()
+Route::get('/register', array('as' => 'register', 'before' => 'guest', function()
 {
   $programs = Program::all();
   $programOptions = array();
@@ -99,9 +99,46 @@ Route::post('/register', array('before' => 'guest|csrf', function()
   // ... otherwise, redirect back to form, with input and flash an error message.
   Session::flash('action_error', 'A server-side error occured while creating a new user. Maybe try again later?');
 
-
   Log::error('Error occured while creating a new user: "save_success"=' . $save_success . ', "auth_success"=' . $auth_success);
 
   return Redirect::to('/register')->withInput();
 
 }));
+
+// Route group for password reset purposes.
+Route::group(array('prefix' => 'recover'), function()
+{
+
+  // Route for `recover` GET
+  Route::get('/', array('as' => 'recover', function()
+  {
+    return View::make('recover');
+  }));
+
+  // Route for `recover` POST; process reset request
+  Route::post('/', array('before' => 'csrf', function()
+  {
+    return Password::remind(array('email' => Input::get('email')), function($m) {
+      $m->subject('schdlr. Password Reset Confirmation.');
+    });
+
+  }));
+
+  // Route for `reset` GET
+  Route::get('/reset/{token}', array('as' => 'reset', function($token)
+  {
+    return View::make('recover_reset')->with('token', $token);
+  }));
+
+  // Route for `reset` POST request; handle the reset.
+  Route::post('/reset/{token}', function($token)
+  {
+    return Password::reset( array('email' => Input::get('email')), function($user, $password) {
+      $user->password = Hash::make($password);
+      $user->save();
+
+      return Redirect::to('/');
+    });
+  });
+
+});

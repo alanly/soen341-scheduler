@@ -16,7 +16,7 @@ Login
   {{ Form::open(array('url' => '/login', 'id' => 'login', 'class' => 'form-horizontal')) }}
     <fieldset>
 
-      <legend>Log into my account...</legend>
+      <legend>Login to an existing account.</legend>
 
       @if( Session::has('auth_error') )
       <div class="alert alert-block alert-error">
@@ -51,7 +51,7 @@ Login
       <div class="control-group">
         <div class="controls">
           <button type="submit" class="btn btn-primary btn-large"><i class="icon-signin"></i> Login</button>
-          <span class="help-inline"><small><a href="/password/reset">Forgot your password?</a></small></span>
+          <span class="help-inline"><small><a href="{{ URL::route('recover') }}">Forgot your password?</a></small></span>
         </div>
       </div>
 

@@ -2,7 +2,7 @@ body {
   padding-top: 25px;
   font-family: "Source Sans Pro", Helvetica, sans-serif;
 }
-input,textarea,select {
+button,input,textarea,select {
   font-family: "Source Sans Pro", Helvetica, sans-serif;
 }
 #main-nav {
