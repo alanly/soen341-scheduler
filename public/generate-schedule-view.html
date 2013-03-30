@@ -1,0 +1,628 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link type="text/css" rel="stylesheet" href="css/bootstrap.css" />
+<title>Generate Schedules</title>
+<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.js"></script>
+<style type="text/css">
+	.modal-body {
+		overflow: auto;
+	}
+	.modal {
+		width: 700px;
+		margin-left: -350px;
+		max-height: 600px;
+		overflow: auto;
+	}
+	.schedule-view {
+		margin-bottom: 0;
+	}
+	.schedule-view td, .schedule-view th {
+		line-height: 10px;
+		text-align: center;
+		vertical-align: middle;
+	}
+	.course-block {
+		background-color: #dff0d8 !important;
+		line-height: 20px !important;
+	}
+	.bold {
+		font-weight: bold;
+	}	
+</style>
+</head>
+<body>
+    <div class="container">
+    	<div class="row">
+        	<div class="span3">
+                <form id="preferences-form" class="well">
+                    <fieldset name="preferred-terms">
+                        <legend>Term(s):</legend>
+                        <label><input type="checkbox" name="fall"> Fall</label><br />
+                        <label><input type="checkbox" name="winter"> Winter</label>
+                    </fieldset>
+                    <fieldset name="preferred-times">
+                        <legend>Time(s):</legend>
+                        <label><input type="checkbox" name="morning"> Morning (00:01 - 13:00)</label><br />
+                        <label><input type="checkbox" name="afternoon"> Afternoon (12:00 - 17:44)</label><br />
+                        <label><input type="checkbox" name="evening"> Evening (17:45 - 23:59)</label>
+                    </fieldset>
+                    <fieldset name="preferred-days">
+                        <legend>Day(s):</legend>
+                        <label><input type="checkbox" name="monday"> Monday</label><br />
+                        <label><input type="checkbox" name="tuesday"> Tuesday</label><br />
+                        <label><input type="checkbox" name="wednesday"> Wednesday</label><br />
+                        <label><input type="checkbox" name="thursday"> Thursday</label><br />
+                        <label><input type="checkbox" name="friday"> Friday</label>
+                    </fieldset><br />
+                    <input class="btn btn-primary" type="submit" value="Generate Schedules" />
+                </form>
+           	</div>
+            <div class="span9">       
+                <div id="schedule-list">
+                    <div class="schedule-list-item well">
+                        <div class="schedule-list-item-details">
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Day</th>
+                                        <th>Time</th>
+                                        <th>Course</th>
+                                        <th>Number</th>
+                                        <th>Section</th>
+                                        <th>Room</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Tuesday</td>
+                                        <td>18:30 - 21:00</td>
+                                        <td>COMP</td>
+                                        <td>335 /1</td>
+                                        <td>Lec AA</td>
+                                        <td>H-411</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tuesday</td>
+                                        <td>18:30 - 21:00</td>
+                                        <td>COMP</td>
+                                        <td>335 /1</td>
+                                        <td>Lec AA</td>
+                                        <td>H-411</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tuesday</td>
+                                        <td>18:30 - 21:00</td>
+                                        <td>COMP</td>
+                                        <td>335 /1</td>
+                                        <td>Lec AA</td>
+                                        <td>H-411</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tuesday</td>
+                                        <td>18:30 - 21:00</td>
+                                        <td>COMP</td>
+                                        <td>335 /1</td>
+                                        <td>Lec AA</td>
+                                        <td>H-411</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tuesday</td>
+                                        <td>18:30 - 21:00</td>
+                                        <td>COMP</td>
+                                        <td>335 /1</td>
+                                        <td>Lec AA</td>
+                                        <td>H-411</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id="schedule1" class="modal hide" aria-hidden="true">
+                                <table class="schedule-view table table-bordered table-striped">
+                                    <col width="10%" />
+                                    <col width="15%" />
+                                    <col width="15%" />
+                                    <col width="15%" />
+                                    <col width="15%" />
+                                    <col width="15%" />
+                                    <thead>
+                                        <tr>
+                                            <th>Time</th>
+                                            <th>Monday</th>
+                                            <th>Tuesday</th>
+                                            <th>Wednesday</th>
+                                            <th>Thursday</th>
+                                            <th>Friday</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>18:30</td>
+                                            <td></td>
+                                            <td class="course-block" rowspan="11"><span class="bold">Start Time:18:30</span><br />COMP 335 / 1<br />Lec AA<br />SGW H-411-<br /><span class="bold">End Time:21:00</span></td>
+                                            <td></td>
+                                            <td class="course-block" rowspan="11"><span class="bold">Start Time:18:30</span><br />COMP 335 / 1<br />Lec AA<br />SGW H-411-<br /><span class="bold">End Time:21:00</span></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>18:45</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>19:00</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>19:15</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>19:30</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>19:45</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>20:00</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>20:15</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>20:30</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>20:45</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>21:00</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>12:30</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>12:30</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>12:30</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>12:30</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>12:30</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                   	</tbody>
+                                </table>
+                        </div>
+                        <a class="btn btn-small btn-success">Save Schedule</a>
+                        <a class="btn btn-small" href="#schedule1" data-toggle="modal">View Schedule</a>
+                    </div>
+                    <div class="schedule-list-item well">
+                        <div class="schedule-list-item-details">
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Day</th>
+                                        <th>Time</th>
+                                        <th>Course</th>
+                                        <th>Number</th>
+                                        <th>Section</th>
+                                        <th>Room</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Tuesday</td>
+                                        <td>18:30 - 21:00</td>
+                                        <td>COMP</td>
+                                        <td>335 /1</td>
+                                        <td>Lec AA</td>
+                                        <td>H-411</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tuesday</td>
+                                        <td>18:30 - 21:00</td>
+                                        <td>COMP</td>
+                                        <td>335 /1</td>
+                                        <td>Lec AA</td>
+                                        <td>H-411</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tuesday</td>
+                                        <td>18:30 - 21:00</td>
+                                        <td>COMP</td>
+                                        <td>335 /1</td>
+                                        <td>Lec AA</td>
+                                        <td>H-411</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tuesday</td>
+                                        <td>18:30 - 21:00</td>
+                                        <td>COMP</td>
+                                        <td>335 /1</td>
+                                        <td>Lec AA</td>
+                                        <td>H-411</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tuesday</td>
+                                        <td>18:30 - 21:00</td>
+                                        <td>COMP</td>
+                                        <td>335 /1</td>
+                                        <td>Lec AA</td>
+                                        <td>H-411</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id="schedule1" class="modal hide" aria-hidden="true">
+                            <div class="modal-body">
+                                <table class="schedule-view table table-bordered table-striped">
+                                    <col width="10%" />
+                                    <col width="15%" />
+                                    <col width="15%" />
+                                    <col width="15%" />
+                                    <col width="15%" />
+                                    <col width="15%" />
+                                    <thead>
+                                        <tr>
+                                            <th>Time</th>
+                                            <th>Monday</th>
+                                            <th>Tuesday</th>
+                                            <th>Wednesday</th>
+                                            <th>Thursday</th>
+                                            <th>Friday</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>18:30</td>
+                                            <td></td>
+                                            <td class="course-block" rowspan="11"><span class="bold">Start Time:18:30</span><br />COMP 335 / 1<br />Lec AA<br />SGW H-411-<br /><span class="bold">End Time:21:00</span></td>
+                                            <td></td>
+                                            <td class="course-block" rowspan="11"><span class="bold">Start Time:18:30</span><br />COMP 335 / 1<br />Lec AA<br />SGW H-411-<br /><span class="bold">End Time:21:00</span></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>18:45</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>19:00</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>19:15</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>19:30</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>19:45</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>20:00</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>20:15</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>20:30</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>20:45</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>21:00</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>12:30</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>12:30</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>12:30</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>12:30</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <a class="btn btn-small btn-success">Save Schedule</a>
+                        <a class="btn btn-small" href="#schedule1" data-toggle="modal">View Schedule</a>
+                    </div>
+                    <div class="schedule-list-item well">
+                        <div class="schedule-list-item-details">
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Day</th>
+                                        <th>Time</th>
+                                        <th>Course</th>
+                                        <th>Number</th>
+                                        <th>Section</th>
+                                        <th>Room</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Tuesday</td>
+                                        <td>18:30 - 21:00</td>
+                                        <td>COMP</td>
+                                        <td>335 /1</td>
+                                        <td>Lec AA</td>
+                                        <td>H-411</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tuesday</td>
+                                        <td>18:30 - 21:00</td>
+                                        <td>COMP</td>
+                                        <td>335 /1</td>
+                                        <td>Lec AA</td>
+                                        <td>H-411</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tuesday</td>
+                                        <td>18:30 - 21:00</td>
+                                        <td>COMP</td>
+                                        <td>335 /1</td>
+                                        <td>Lec AA</td>
+                                        <td>H-411</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tuesday</td>
+                                        <td>18:30 - 21:00</td>
+                                        <td>COMP</td>
+                                        <td>335 /1</td>
+                                        <td>Lec AA</td>
+                                        <td>H-411</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tuesday</td>
+                                        <td>18:30 - 21:00</td>
+                                        <td>COMP</td>
+                                        <td>335 /1</td>
+                                        <td>Lec AA</td>
+                                        <td>H-411</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id="schedule1" class="modal hide" aria-hidden="true">
+                            <div class="modal-body">
+                                <table class="schedule-view table table-bordered table-striped">
+                                    <col width="10%" />
+                                    <col width="15%" />
+                                    <col width="15%" />
+                                    <col width="15%" />
+                                    <col width="15%" />
+                                    <col width="15%" />
+                                    <thead>
+                                        <tr>
+                                            <th>Time</th>
+                                            <th>Monday</th>
+                                            <th>Tuesday</th>
+                                            <th>Wednesday</th>
+                                            <th>Thursday</th>
+                                            <th>Friday</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>18:30</td>
+                                            <td></td>
+                                            <td class="course-block" rowspan="11"><span class="bold">Start Time:18:30</span><br />COMP 335 / 1<br />Lec AA<br />SGW H-411-<br /><span class="bold">End Time:21:00</span></td>
+                                            <td></td>
+                                            <td class="course-block" rowspan="11"><span class="bold">Start Time:18:30</span><br />COMP 335 / 1<br />Lec AA<br />SGW H-411-<br /><span class="bold">End Time:21:00</span></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>18:45</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>19:00</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>19:15</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>19:30</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>19:45</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>20:00</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>20:15</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>20:30</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>20:45</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>21:00</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>12:30</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>12:30</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>12:30</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>12:30</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <a class="btn btn-small btn-success">Save Schedule</a>
+                        <a class="btn btn-small" href="#schedule1" data-toggle="modal">View Schedule</a>
+                    </div>
+                </div>
+          	</div>
+        </div>
+    </div>
+</body>
+</html>
