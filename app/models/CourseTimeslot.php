@@ -4,6 +4,8 @@ class CourseTimeslot extends Eloquent {
 
   protected $table = 'course_timeslots';
 
+  public $timestamps = false;
+
   public function course()
   {
     return $this->belongsTo('Course');

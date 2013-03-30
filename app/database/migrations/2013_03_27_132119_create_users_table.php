@@ -18,8 +18,8 @@ class CreateUsersTable extends Migration {
       $table->string('password');
       $table->string('name');
       $table->integer('is_admin')->default(0);
-      $table->integer('program_id')->nullable();
-      $table->integer('option_id')->nullable();
+      $table->integer('program_id');
+      $table->integer('option_id');
       $table->timestamps();
 		});
 	}
