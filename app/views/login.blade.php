@@ -28,7 +28,7 @@ Login
         <label class="control-label" for="email">Email</label>
 
         <div class="controls">
-          <input type="email" id="email" name="email" required="required">
+          <input type="email" id="email" name="email" required="required" value="{{ Input::old('email') }}">
         </div>
       </div>
 
