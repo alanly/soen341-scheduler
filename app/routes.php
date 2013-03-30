@@ -14,7 +14,7 @@
 // Default root route
 Route::get('/', array('before' => 'auth', function()
 {
-  return View::make('hello');
+  return View::make('dashboard');
 }));
 
 // Route for `login` GET
@@ -43,3 +43,9 @@ Route::get('/logout', function()
   Auth::logout();
   return Redirect::to('/');
 });
+
+// Route for `register` GET
+Route::get('/register', array('before' => 'guest', function()
+{
+  return View::make('register');
+}));

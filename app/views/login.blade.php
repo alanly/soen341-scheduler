@@ -50,7 +50,7 @@ Login
 
       <div class="control-group">
         <div class="controls">
-          <button type="submit" class="btn btn-primary">Login</button>
+          <button type="submit" class="btn btn-primary btn-large"><i class="icon-signin"></i> Login</button>
           <span class="help-inline"><small><a href="/password/reset">Forgot your password?</a></small></span>
         </div>
       </div>

@@ -3,5 +3,7 @@
 @section('page_title')Herro!@stop
 
 @section('page_content')
-Herro, werld!
+<div class="container">
+  Herro, werld!
+</div>
 @stop
