@@ -13,38 +13,5 @@
 
 Route::get('/', function()
 {
-	return View::make('main');
+	return View::make('hello');
 });
-Route::get('/acedemic', function()
-{
-        return View::make('acedemic');
-});
-Route::get('/admin/users', function()
-{
-        return View::make('admin-users');
-});
-Route::post('/admin/users', function()
-{
-        return View::make('admin-users');
-});
-
-Route::get('/admin/programs', function()
-{
-        return View::make('admin-programs');
-});
-Route::post('/admin/programs', function()
-{
-        return View::make('admin-programs');
-});
-
-Route::get('/admin/options', function()
-{
-        return View::make('admin-options');
-});
-Route::get('/admin/courses', function()
-{
-        return View::make('admin-courses');
-});
-
-
-
