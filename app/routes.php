@@ -23,10 +23,20 @@ Route::get('/admin/users', function()
 {
         return View::make('admin-users');
 });
+Route::post('/admin/users', function()
+{
+        return View::make('admin-users');
+});
+
 Route::get('/admin/programs', function()
 {
         return View::make('admin-programs');
 });
+Route::post('/admin/programs', function()
+{
+        return View::make('admin-programs');
+});
+
 Route::get('/admin/options', function()
 {
         return View::make('admin-options');
