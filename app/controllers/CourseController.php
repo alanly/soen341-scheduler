@@ -2,6 +2,14 @@
 
 class CourseController extends BaseController {
 
+  public function __construct()
+  {
+
+    $this->beforeFilter('csrf', array('on' => 'post'));
+    $this->beforeFilter('auth');
+
+  }
+
   public function getIndex()
   {
 
@@ -12,22 +20,16 @@ class CourseController extends BaseController {
   public function getSearch()
   {
 
+    if( Input::has('query') ) {
+      $search_results = DB::table('courses')
+        ->where('code', 'like', '%' . Input::get('query') . '%')
+        ->orWhere('description', 'like', '%' . Input::get('query') . '%')
+        ->get();
+
+      Session::flash('search_results', $search_results);
+    }
+
     return View::make('course.search');
-
-  }
-
-  public function postSearch()
-  {
-
-    $search_results = DB::table('courses')
-      ->where('code', 'like', '%' . Input::get('query') . '%')
-      ->orWhere('description', 'like', '%' . Input::get('query') . '%')
-      ->get();
-
-    Session::flash('search_results', $search_results);
-
-    return Redirect::to('course/search')
-      ->withInput();
   }
 
 }
