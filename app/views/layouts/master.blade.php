@@ -21,10 +21,10 @@
       <nav id="main-nav" class="pull-right">
         <ul class="nav nav-pills">
           <li{{ Request::is('/') ? ' class="active"' : ''  }}><a href="/"><i class="icon-dashboard"></i> Dashboard</a></li>
-          <li{{ Request::is('/schedule*') ? ' class="active"' : '' }}><a href="/schedule"><i class="icon-calendar"></i> Schedules</a></li>
-          <li{{ Request::is('/course*') ? ' class="active"' : '' }}><a href="/course"><i class="icon-book"></i> Courses</a></li>
-          <li{{ Request::is('/academicrecord*') ? ' class="active"' : '' }}><a href="/academicrecord"><i class="icon-list-ol"></i> Academic Record</a></li>
-          <li{{ Request::is('/profile*') ? ' class="active"' : '' }}><a href="/profile"><i class="icon-user"></i> Profile</a></li>
+          <li{{ Request::is('schedule*') ? ' class="active"' : '' }}><a href="/schedule"><i class="icon-calendar"></i> Schedules</a></li>
+          <li{{ Request::is('course*') ? ' class="active"' : '' }}><a href="/course"><i class="icon-book"></i> Courses</a></li>
+          <li{{ Request::is('academicrecord*') ? ' class="active"' : '' }}><a href="/academicrecord"><i class="icon-list-ol"></i> Academic Record</a></li>
+          <li{{ Request::is('profile*') ? ' class="active"' : '' }}><a href="/profile"><i class="icon-user"></i> Profile</a></li>
           <li><a href="/logout"><i class="icon-signout"></i> Logout</a></li>
         </ul>
       </nav>

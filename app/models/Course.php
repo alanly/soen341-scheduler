@@ -2,7 +2,7 @@
 
 class Course extends Eloquent {
 
-  protected $table = 'course';
+  protected $table = 'courses';
 
   public $timestamps = false;
 
