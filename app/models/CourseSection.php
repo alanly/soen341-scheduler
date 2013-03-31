@@ -4,6 +4,8 @@ class CourseSection extends Eloquent {
 
   protected $table = 'course_section';
 
+  public $timestamps = false;
+
   public function courseTimeslots()
   {
     return $this->hasMany('CourseTimeslot');
