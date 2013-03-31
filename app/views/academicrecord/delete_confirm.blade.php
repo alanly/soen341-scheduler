@@ -1,15 +1,12 @@
-@extends('layouts.master')
+@extends('academicrecord.master')
 
-@section('page_title')
-Academic Record
+@section('section_title')
+My Academic Record
 @stop
 
-@section('page_content')
-<div class="container">
-  <div class="page-header">
-    <h2>My Academic Record</h2>
-  </div>
+@section('section_content')
 
+<div class="row-fluid">
   <div class="well">
     {{ Form::open(array('class' => 'form-horizontal')) }}
       <fieldset>
@@ -33,4 +30,5 @@ Academic Record
     {{ Form::close() }}
   </div>
 </div>
+
 @stop

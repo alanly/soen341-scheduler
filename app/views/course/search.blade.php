@@ -21,6 +21,7 @@ Search Courses
 </div>
 
 @if( Session::has('search_results') )
+<div class="row-fluid">
   <table class="table table-hover">
     <tbody>
       @foreach( Session::get('search_results') as $course )
@@ -30,5 +31,6 @@ Search Courses
       @endforeach 
     </tbody>
   </table>
+</div>
 @endif
 @stop
