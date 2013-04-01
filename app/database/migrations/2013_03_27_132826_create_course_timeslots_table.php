@@ -17,6 +17,7 @@ class CreateCourseTimeslotsTable extends Migration {
       $table->integer('course_id');
       $table->integer('section_id');
       $table->string('type');
+      $table->string('code');
       $table->string('location');
       $table->string('instructor');
       $table->integer('day');

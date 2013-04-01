@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCoursesTable extends Migration {
+class CreateSchoolSessionsTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -11,12 +11,10 @@ class CreateCoursesTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('courses', function($table)
+		Schema::create('school_sessions', function($table)
 		{
       $table->increments('id');
-      $table->integer('session_id');
-      $table->string('code');
-      $table->string('description');
+      $table->string('code')->unique();
 		});
 	}
 
@@ -27,7 +25,7 @@ class CreateCoursesTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('courses');
+		Schema::drop('school_sessions');
 	}
 
 }

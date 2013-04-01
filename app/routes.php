@@ -142,3 +142,10 @@ Route::group(array('prefix' => 'recover'), function()
   });
 
 });
+
+// Define controller route for AcademicRecord
+Route::controller('academicrecord', 'AcademicRecordController');
+
+// Define controller route for Course
+Route::controller('course', 'CourseController');
+
