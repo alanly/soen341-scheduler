@@ -25,15 +25,32 @@
                                 <thead>
                                         <th>Code</th>
                                         <th>Description</th>
+					<th>Sections</th>
 					<th>TimeSlot</th>
                                         <th>Remove</th>
                                 </thead>
+				<?php $courses = Course::all();
+					foreach($courses as $course){
+				?>
                                 <tr class="success">
-                                        <td>SOEN 331</td>
-                                        <td>Description</td>
-					<td><a class="btn" href="#">View</a></td>
-                                        <td><a class="btn" href="#">Remove</a></td>
+                                        <td><?php echo $course->code; ?></td>
+                                        <td><?php echo $course->description; ?></td>
+					<td><select class="input-small">
+						<?php $sections = DB::table('course_sections')->where('course_id','=',$course->id)->get();
+						foreach($sections as $section){
+							?>
+							<option value="<?php echo $section->id; ?>"><?php echo $section->code;?></option>
+						<?php
+						}
+						?>
+					</select></td>
+					<td><a class="btn" href="courses/<?php echo $course->id; ?>/edit">View</a></td>
+					<form action="courses/<?php echo $course->id; ?>" method="POST">
+						<input type="hidden" name="_method" value="DELETE">
+	                                        <td><input type="submit" name="remove" value="remove" class="btn"></td>
+					</form>
                                 </tr>
+				<?php } ?>
                         </table>
 			</div>
 			  <div class="row-fluid">
@@ -43,11 +60,15 @@
                                                 <thead>
                                                         <th>Code</th>
 							<th>Description</th>
+							<th>Section Code</th>
                                                 </thead>
 						<tr>
-							<td><input type="text" name="code" value="Greendale"/></td> 
-                                                        <td><input type="text" name="description" value="Theoretical Phys-ed"/></td>
-                                                        <td><input type="submit" class="btn" value="Add"/></td>
+							<form action="courses/create" method="GET">
+								<td><input type="text" name="code" value="Greendale"/></td> 
+	                                                        <td><input type="text" name="description" value="Theoretical Phys-ed"/></td>
+								<td><input class="input-small" type="text" name="section" value="NN"/></td>
+        	                                                <td><input type="submit" name="submit" class="btn" value="Add"/></td>
+							</form>
                                                 </tr>
                                         </table>
 

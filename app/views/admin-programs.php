@@ -1,8 +1,4 @@
-<?php 
-if(ISSET($_POST["submit"])){	
-DB::table('programs')->insert(array('description' => $_POST["name"]));
-}
-?><!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
         <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap/2.3.1/css/bootstrap.min.css">
@@ -36,12 +32,15 @@ DB::table('programs')->insert(array('description' => $_POST["name"]));
 				?>
                                 <tr class="success">
                                         <td><?php echo $program->description; ?></td>
-                                        <td><a class="btn" href="#">Edit</a></td>
-                                        <td><a class="btn" href="#">Remove</a></td>
+                                        <td><a class="btn" href="programs/edit">Edit</a></td>
+					<form action="programs/<?php echo $program->id; ?>" method="post">
+					<input type="hidden" name="_method" value="DELETE">
+                                        <td><input type="submit" name="remove" value="Remove" class="btn"></td>
+					</form>
                                 </tr>
 			<?php } ?>
                         </table>
-			</div>
+		</div>
 			<div class="row-fluid">
 				<div class="well">
 					<h4 class="muted">Add program</h4>
@@ -50,7 +49,7 @@ DB::table('programs')->insert(array('description' => $_POST["name"]));
                                                         <th>Program Name</th>
                                                 </thead>
                                                 <tr>
-							<form action="" id="add" method="post">                          
+							<form action="programs/create" method="get">                          
 				                              <td><input type="text" name="name" value="Theoretical Phys-ed"/></td>
                                 	                      <td><input type="submit" class="btn" name="submit" value="Add"/></td>
 							</form>

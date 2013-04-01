@@ -2,7 +2,7 @@
 
 class Course extends Eloquent {
 
-  protected $table = 'course';
+  protected $table = 'courses';
 
   public $timestamps = false;
 
@@ -18,7 +18,7 @@ class Course extends Eloquent {
 
   public function courseTimeslots()
   {
-    return $this->hasMany('CourseTimeslots');
+    return $this->hasMany('CourseTimeslot');
   }
 
 }

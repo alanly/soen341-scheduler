@@ -33,9 +33,12 @@
 					foreach($options as $option){
 				?>
                                 <tr class="success">
-                                        <td><?php echo $option->descripton; ?></td>
-                                        <td><a class="btn" href="#">Edit</a></td>
-                                        <td><a class="btn" href="#">Remove</a></td>
+                                        <td><?php echo $option->description . " ID: $option->program_id"; ?></td>
+                                        <td><a class="btn" href="options/edit">Edit</a></td>
+					<form method="post" action="options/<?php echo $option->id; ?>">
+						<input type="hidden" name="_method" value="DELETE">	                                       
+						<td><input type="submit" name="remove" class="btn" value="Remove"></td>
+					</form>
                                 </tr>
 				<?php } ?>
                         </table>
@@ -43,6 +46,7 @@
                         <div class="row-fluid">
                                 <div class="well">
                                         <h4 class="muted">Add option</h4>
+					<form action="options/create" method="GET">
                                           <table class="table table-hover">
 		                                <thead>
 	        	                                <th>Option Name</th>
@@ -51,15 +55,23 @@
 	                                	</thead>
 						<tr>
 							<td><input type="text" name="description" value="P.E.E"/></td>
-							<td><select>
-								<option>FUCK</option>
+							<td><select name ="program">
+								<?php $programs = Program::all();
+								foreach($programs as $program){
+								 ?>
+								<option value="<?php echo $program->id; ?>" ><?php echo $program->description;?></option>
+								<?php } ?>
 							</select></td>
-							<td><select size="10">
-								<option>SOEN 331</option>
+							<td><select name="course[]" multiple size="10">
+								<?php $courses = Course::all();
+								foreach($courses as $course){ ?>
+								<option value="<?php echo $course->id; ?>"><?php echo $course->description;?></option>
+								<?php }?>
 							</select></td>
 						</tr>
 					</table>
-					<input class="btn" type="submit" value="add">
+					<input class="btn" type="submit" name="submit" value="add">
+					</form>
                                 </div>
                         </div>
                 </div>

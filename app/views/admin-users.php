@@ -1,9 +1,3 @@
-<?php 
-if(ISSET($_POST["submit"])){
-	$id = $_POST["id"];
-	DB::table('users')->delete($id);		
-}
-?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -41,9 +35,9 @@ if(ISSET($_POST["submit"])){
                                 <tr>
                                         <td><?php echo $user->email; ?></td>
                                         <td><?php echo $user->name; ?></td>
-                                	<form action="" method="post"> 
-					<input type="hidden" name="id" value="<?php echo $user->id; ?>">
-				       <td><input type="submit" name="submit"  class="btn" value="Remove"></td>
+                                	<form action="users/<?php echo $user->id; ?>" method="post"> 
+					<input type="hidden" name="_method" value="DELETE">
+				        <td><input type="submit" name="submit"  class="btn" value="Remove"></td>
 					</form>
                                 </tr>
 			<?php }//end foreach loop ?>

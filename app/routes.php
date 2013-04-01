@@ -18,30 +18,7 @@ Route::get('/acedemic', function()
 {
         return View::make('acedemic');
 });
-Route::get('/admin/users', function()
-{
-        return View::make('admin-users');
-});
-Route::post('/admin/users', function()
-{
-        return View::make('admin-users');
-});
-
-Route::get('/admin/programs', function()
-{
-        return View::make('admin-programs');
-});
-Route::post('/admin/programs', function()
-{
-        return View::make('admin-programs');
-});
-
-Route::get('/admin/options', function()
-{
-        return View::make('admin-options');
-});
-Route::get('/admin/courses', function()
-{
-        return View::make('admin-courses');
-});
-
+Route::resource('admin/users', 'AdminUserController');
+Route::resource('admin/programs', 'AdminProgramController');
+Route::resource('admin/options', 'AdminProgramOptionController');
+Route::resource('admin/courses', 'AdminCourseController');
