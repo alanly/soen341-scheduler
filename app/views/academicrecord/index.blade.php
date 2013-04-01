@@ -35,7 +35,7 @@ My Academic Record
       @else
         @foreach( $records as $id => $course )
         <tr>
-          <td>{{{ $course->code }}} &ndash; {{{ $course->description }}}</td>
+          <td><a href="/course/details/{{ $course->id }}">{{{ $course->code }}} &ndash; {{{ $course->description }}}</a></td>
           <td><a href="/academicrecord/delete/{{ $id }}"><i class="icon-trash"></i></a></td>
         </tr>
         @endforeach
