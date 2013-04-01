@@ -79,7 +79,7 @@ Route::post('/register', array('before' => 'guest|csrf', function()
   }
 
   $user = new User;
-  $user->id = Input::get('id');
+  $user->university_id = Input::get('id');
   $user->name = Input::get('name');
   $user->email = Input::get('email');
   $user->password = Hash::make(Input::get('password'));
@@ -149,3 +149,5 @@ Route::controller('academicrecord', 'AcademicRecordController');
 // Define controller route for Course
 Route::controller('course', 'CourseController');
 
+// Define controller route for Profile
+Route::controller('profile', 'ProfileController');

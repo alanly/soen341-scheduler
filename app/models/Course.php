@@ -18,7 +18,7 @@ class Course extends Eloquent {
 
   public function courseTimeslots()
   {
-    return $this->hasMany('CourseTimeslots');
+    return $this->hasMany('CourseTimeslot');
   }
 
   public function schoolSession()
