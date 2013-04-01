@@ -19,7 +19,7 @@ My Academic Record
 </div>
 
 <div class="row-fluid">
-  <table class="table table-striped">
+  <table class="table table-hover">
     <thead>
       <tr>
         <th>Completed Courses</th>

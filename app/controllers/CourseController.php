@@ -32,4 +32,26 @@ class CourseController extends BaseController {
     return View::make('course.search');
   }
 
+  public function getList()
+  {
+
+    $courses = Course::orderBy('code')->get();
+
+    return View::make('course.list')->with('courses', $courses);
+
+  }
+
+  public function getDetails($id)
+  {
+
+    $course = Course::find($id);
+
+    if( is_null($course) )
+      App::abort(404, 'Requested course not found.');
+
+    return View::make('course.details')
+      ->with('course', $course);
+
+  }
+
 }
