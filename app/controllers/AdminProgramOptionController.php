@@ -59,7 +59,9 @@ class AdminProgramOptionController extends BaseController {
 	 */
 	public function edit($id)
 	{
-		//
+		$option = ProgramOption::find($id);
+                return View::make('edit-options')->with('option', $option);
+
 	}
 
 	/**

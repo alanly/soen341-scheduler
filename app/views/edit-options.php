@@ -22,8 +22,20 @@
                         </ul>
                 </div>
                 <div class="span10">
-	 </div>
-</div>
+			<table class="table table-hover">
+				<thead>
+					<th>Option Name</th>
+					<th>Program Name</th>
+					<th>Courses</th>
+				</thead>
+				<tr>
+					<td><?php echo $option->description; ?></td>
+					<td><?php echo $option->description; ?></td>
+					<td><?php echo $option->description; ?></td>
+				<tr>
+			</table>
+		</div>
+	</div>
 
 <footer class="row-fluid">
         <hr>

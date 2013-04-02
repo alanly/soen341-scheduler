@@ -53,7 +53,9 @@ class AdminProgramController extends BaseController {
 	 */
 	public function edit($id)
 	{
-		//
+	        $programs = Program::find($id);
+                return View::make('edit-programs')->with('programs', $programs);
+
 	}
 
 	/**

@@ -32,7 +32,7 @@
 				?>
                                 <tr class="success">
                                         <td><?php echo $program->description; ?></td>
-                                        <td><a class="btn" href="programs/edit">Edit</a></td>
+                                        <td><a class="btn" href="programs/<?php echo $program->id;?>/edit">Edit</a></td>
 					<form action="programs/<?php echo $program->id; ?>" method="post">
 					<input type="hidden" name="_method" value="DELETE">
                                         <td><input type="submit" name="remove" value="Remove" class="btn"></td>

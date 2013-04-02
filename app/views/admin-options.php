@@ -34,7 +34,7 @@
 				?>
                                 <tr class="success">
                                         <td><?php echo $option->description . " ID: $option->program_id"; ?></td>
-                                        <td><a class="btn" href="options/edit">Edit</a></td>
+                                        <td><a class="btn" href="options/<?php echo $option->id; ?>/edit">Edit</a></td>
 					<form method="post" action="options/<?php echo $option->id; ?>">
 						<input type="hidden" name="_method" value="DELETE">	                                       
 						<td><input type="submit" name="remove" class="btn" value="Remove"></td>

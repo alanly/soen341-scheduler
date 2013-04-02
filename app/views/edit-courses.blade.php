@@ -23,10 +23,27 @@
                 </div>
                 <div class="span10">
 			<div class="row-fluid">
-				<label><?php echo $course->description; ?></label>
+				<label><?php echo "Sections for Course <b>$course->code -- $course->description </b>"; ?></label>
+				<table class="table table-hover">
+					<thead>
+						<th>Section</th>
+						<th>Day</th>
+						<th>Start Time</th>
+						<th>End Time</th>
+						<th>Location</th>
+						<th>Instructor</th>
+					</thead>
 				<?php foreach($timeslots as $time){ ?>
-					<?php echo "Timeslot Id: " .$time->day . "<br>"; ?>
+					<tr>
+						<td>{{{ $time->courseSection()->first()->code }}}</td>
+						<td><?php echo $time->day;?></td>
+						<td><?php echo $time->start_time;?></td>
+						<td><?php echo $time->end_time;?></td>
+						<td><?php echo $time->location;?></td>
+						<td><?php echo $time->instructor;?></td>
+					</tr>
 				<?php }	?>
+				</table>
 			</div>
 			 <div class="row-fluid">
                                 <div class="well">

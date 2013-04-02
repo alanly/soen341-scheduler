@@ -70,15 +70,13 @@ class AdminCourseController extends BaseController {
 	 */
 	public function update($id)
  	{
-
-
 	    $section_id = Input::get('section');
 	    $type = 'NO_TYPE';
 	    $location = Input::get('location');
 	    $instructor = Input::get('instructor');
 	    $start_time = Input::get('start');
 	    $end_time = Input::get('end');
-	
+
 	    foreach( Input::get('days') as $day ) {
 	      CourseTimeslot::create(
 	        array(
