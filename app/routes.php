@@ -163,4 +163,6 @@ Route::group( array('prefix' => 'admin', 'before' => 'auth|admin'), function()
   
   Route::resource('user', 'AdminUserController');
 
+  Route::resource('program', 'AdminProgramController');
+
 });

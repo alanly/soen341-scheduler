@@ -1,9 +1,6 @@
 @extends('admin.user.master')
 
 @section('section_styles')
-form {
-  display: inline;
-}
 @stop
 
 @section('subsection_content')

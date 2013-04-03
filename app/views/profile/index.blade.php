@@ -125,7 +125,8 @@ My Profile
 
       <div class="control-group">
         <div class="controls">
-          <button type="submit" class="btn btn-primary btn-large"><i class="icon-save"></i> Save</button>
+          <button type="submit" class="btn btn-primary"><i class="icon-save"></i> Save Changes</button>
+          <button type="reset" class="btn"><i class="icon-reply"></i> Undo</button>
         </div>
       </div>
 

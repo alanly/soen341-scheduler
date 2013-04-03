@@ -23,10 +23,19 @@ class AdminUserController extends BaseController {
 	 * @return Response
 	 */
 	public function show($id)
-	{
+  {
+
     $user = User::find($id);
 
+    if( is_null($user) ) {
+      Session::flash('action_success', false);
+      Session::flash('action_message', 'The specified user could not be found.');
+
+      return Redirect::action('AdminUserController@index');
+    }
+
     return View::make('admin.user.show')->with('user', $user);
+
 	}
 
 	/**
@@ -40,8 +49,12 @@ class AdminUserController extends BaseController {
 
     $user = User::find($id);
 
-    if( is_null($user) )
-      App::abort(404, 'Specified user not found.');
+    if( is_null($user) ) {
+      Session::flash('action_success', false);
+      Session::flash('action_message', 'The specified user could not be found.');
+
+      return Redirect::action('AdminUserController@index');
+    }
 
     // Make sure this isn't the primary administrator account.
     if( $user->id != 1 ) {
