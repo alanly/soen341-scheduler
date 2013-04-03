@@ -21,7 +21,7 @@ thead th {
     <a href="/admin/program/{{ $program->id }}/edit" class="btn btn-primary"><i class="icon-edit"></i> Edit Program</a>
     <br><br>
     {{ Form::open() }}
-      <button type="submit" class="btn btn-warning"{{ $program->id == 1 ? ' disabled' : '' }}><i class="icon-fire"></i> Delete Program</button>
+      <button type="submit" class="btn btn-danger"{{ $program->id == 1 ? ' disabled' : '' }}><i class="icon-fire"></i> Delete Program</button>
       {{ Form::token() }}
       {{ Form::hidden('_method', 'delete') }}
     {{ Form::close() }}
@@ -46,8 +46,8 @@ thead th {
     <tfoot>
       <tr>
         <td colspan="4">
-          {{ Form::open( array('id' => 'add_option_form', 'url' => '/admin/programoption/create' ) ) }}
-            <a href="/admin/programoption/create" onclick="$('#add_option_form').submit()"><i class="icon-plus-sign"></i> Add a new option.</a>
+          {{ Form::open( array('id' => 'add_option_form', 'url' => '/admin/option/create' ) ) }}
+            <a href="/admin/option/create" onclick="$('#add_option_form').submit()"><i class="icon-plus-sign"></i> Add a new option.</a>
             {{ Form::token() }}
             {{ Form::hidden('program_id', $program->id) }}
           {{ Form::close() }}
@@ -61,12 +61,12 @@ thead th {
     <tbody>
       @foreach( $programOptions as $o )
         <tr>
-          <td><a href="/admin/programoption/{{ $o->id }}">{{{ $o->description }}}</a></td>
+          <td><a href="/admin/option/{{ $o->id }}">{{{ $o->description }}}</a></td>
           <td>{{{ User::where('option_id', $o->id)->count() }}}</td>
           <td>{{{ ProgramOptionCourse::where('option_id', $o->id)->count() }}}</td>
           <td>
             @if( $o->id != 1 )
-            <a href="/admin/programoption/{{ $o->id }}/edit" title="Edit {{{ $o->description }}}."><i class="icon-edit"></i></a>
+            <a href="/admin/option/{{ $o->id }}/edit" title="Edit {{{ $o->description }}}."><i class="icon-edit"></i></a>
             @endif
           </td>
         </tr>
