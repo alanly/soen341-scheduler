@@ -37,8 +37,8 @@ thead th {
           <td>
             @if( $p->id != 1 )
             <a href="/admin/program/{{ $p->id }}/edit" title="Edit {{{ $p->description }}}."><i class="icon-edit"></i></a>
-            {{ Form::open( array('id' => 'delete_form', 'class' => 'form-inline') ) }}
-              <a href="" onclick="$('#delete_form').submit()" title="Delete {{{ $p->description }}}."><i class="icon-trash"></i></a>
+            {{ Form::open( array('id' => 'delete_' . $p->id . '_form', 'class' => 'form-inline') ) }}
+              <a href="" onclick="$('#delete_{{ $p->id }}_form').submit()" title="Delete {{{ $p->description }}}."><i class="icon-trash"></i></a>
               {{ Form::hidden('_method', 'delete') }}
               {{ Form::token() }}
             {{ Form::close() }}
