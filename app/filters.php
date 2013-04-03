@@ -44,6 +44,11 @@ Route::filter('guest', function()
 	if (Auth::check()) return Redirect::to('/');
 });
 
+Route::filter('admin', function()
+{
+  if (Auth::user()->is_admin == 0) App::abort('401', 'You are not authorized to access this section.');
+});
+
 /*
 |--------------------------------------------------------------------------
 | CSRF Protection Filter

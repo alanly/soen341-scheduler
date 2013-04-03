@@ -9,7 +9,7 @@ Academic Records
   <div class="span2">
     <ul class="nav nav-list well">
       <li class="nav-header">Academic Record</li>
-      <li class="active"><a href="/academicrecord">View/Edit Academic Record</a></li>
+      <li class="active"><a href="/academicrecord">My Academic Record</a></li>
     </ul>
   </div>
 

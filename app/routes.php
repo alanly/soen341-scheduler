@@ -151,3 +151,16 @@ Route::controller('course', 'CourseController');
 
 // Define controller route for Profile
 Route::controller('profile', 'ProfileController');
+
+// Define routes for administrative interface
+Route::group( array('prefix' => 'admin', 'before' => 'auth|admin'), function()
+{
+
+  Route::get('/', function()
+  {
+    return Redirect::action('AdminUserController@index');
+  });
+  
+  Route::resource('user', 'AdminUserController');
+
+});

@@ -13,8 +13,8 @@ Courses
   <div class="span2">
     <ul class="nav nav-list well">
       <li class="nav-header">Courses</li>
-      <li{{ Request::is('course/search*') ? ' class="active"' : '' }}><a href="/course/search">Search for a Course</a></li>
-      <li{{ Request::is('course/list*') ? ' class="active"' : '' }}><a href="/course/list">List all Courses</a></li>
+      <li{{ Request::is('course/search*') ? ' class="active"' : '' }}><a href="/course/search">Search Courses</a></li>
+      <li{{ Request::is('course/list*') ? ' class="active"' : '' }}><a href="/course/list">List Courses</a></li>
     </ul>
   </div>
 

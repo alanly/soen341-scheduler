@@ -44,7 +44,7 @@
         <p class="muted pull-left"><small>2013 &copy; Team Dolla Dolla Bill Y'all.</small></p>
 
         @if( Auth::check() && Auth::user()->is_admin == 1 )
-          @if( Request::is('/admin*') )
+          @if( Request::is('admin*') )
             <p class="pull-right"><a href="/"><i class="icon-road"></i> Switch to Regular Interface</a></p>
           @else
             <p class="pull-right"><a href="/admin"><i class="icon-cogs"></i> Switch to Administrative Interface</a></p>
