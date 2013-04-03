@@ -47,6 +47,7 @@
 					<td><a class="btn" href="courses/<?php echo $course->id; ?>/edit">View</a></td>
 					<form action="courses/<?php echo $course->id; ?>" method="POST">
 						<input type="hidden" name="_method" value="DELETE">
+						<input type="hidden" name="action" value="course">
 	                                        <td><input type="submit" name="remove" value="remove" class="btn"></td>
 					</form>
                                 </tr>

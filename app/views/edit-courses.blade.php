@@ -15,14 +15,20 @@
                 <div class="span2">
                         <ul class="nav nav-list">
                                   <li class="nav-header">Header</li>
-                                  <li><a href="../../users">Users</a></li>
-                                  <li><a href="../../programs">Programs</a></li>
-                                  <li><a href="../../options">Options</a></li>
-                                  <li class="active"><a href="../../courses">Courses</a></li>
+                                  <li><a href="/admin/users">Users</a></li>
+                                  <li><a href="/admin/programs">Programs</a></li>
+                                  <li><a href="/admin/options">Options</a></li>
+                                  <li class="active"><a href="/admin/courses">Courses</a></li>
                         </ul>
                 </div>
                 <div class="span10">
 			<div class="row-fluid">
+				<?php 
+					if(ISSET($error)){?>
+						<label class="alert">
+						<?php echo $error; ?>
+						</label>	
+					<?php } ?>
 				<label><?php echo "Sections for Course <b>$course->code -- $course->description </b>"; ?></label>
 				<table class="table table-hover">
 					<thead>
@@ -32,6 +38,7 @@
 						<th>End Time</th>
 						<th>Location</th>
 						<th>Instructor</th>
+						<th>Remove</th>
 					</thead>
 				<?php foreach($timeslots as $time){ ?>
 					<tr>
@@ -41,6 +48,14 @@
 						<td><?php echo $time->end_time;?></td>
 						<td><?php echo $time->location;?></td>
 						<td><?php echo $time->instructor;?></td>
+						<td>
+							<form action="/admin/courses/{{ $course->id }}" method="post">
+								<input type="hidden" name="_method" value="DELETE">
+								<input type="hidden" name="action" value="timeslot">
+								<input type="hidden" name="timeslot_id" value="<?php echo $time->id; ?>">
+								<input type="submit" class="btn" value="Remove">
+							</form>
+						</td>
 					</tr>
 				<?php }	?>
 				</table>

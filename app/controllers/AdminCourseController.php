@@ -58,7 +58,7 @@ class AdminCourseController extends BaseController {
 	{
 
 		$course = Course::find($id);  
-		$timeslots = CourseTimeslot::all();
+		$timeslots = $course->courseTimeslots()->get();
 		return View::make('edit-courses')->with('course', $course)->with('timeslots',$timeslots);
 	}
 
@@ -76,7 +76,31 @@ class AdminCourseController extends BaseController {
 	    $instructor = Input::get('instructor');
 	    $start_time = Input::get('start');
 	    $end_time = Input::get('end');
-
+	    $start = strtotime($start_time);
+	    $end = strtotime($end_time);
+	    $error = false;
+	    if($start > $end){
+		$error = true;
+		$error_msg = "Cannot have the start time after the end time";
+	    }
+	    $course = Course::find($id);
+	    $timeslots = $course->courseTimeslots()->get();
+		 //checking if conflicts with already inserted timeslots
+            foreach($timeslots as $timeslot){
+		foreach(Input::get('days') as $day){
+                if((($start >= strtotime($timeslot->start_time) && $start <= strtotime($timeslot->end_time)) ||
+                    ($end >= strtotime($timeslot->start_time) && $end <= strtotime($timeslot->end_time))) && ($section_id == $timeslot->section_id) &&
+			($day == $timeslot->day)){
+                           $error = true;
+			   $error_msg = "There is a conflict with the times you have chosen.";
+                           break;
+                        }
+                }
+	     }
+	     if($error){
+              	 return View::make('edit-courses')->with('course', $course)->with('timeslots',$timeslots)->with('error',$error_msg);
+		}
+		
 	    foreach( Input::get('days') as $day ) {
 	      CourseTimeslot::create(
 	        array(
@@ -103,9 +127,21 @@ class AdminCourseController extends BaseController {
 	 */
 	public function destroy($id)
 	{
-	        DB::table('courses')->delete($id);
-	        DB::table('course_sections')->where('course_id','=',$id)->delete();
-		return Redirect::action('AdminCourseController@index');
+		$action = Input::get('action');
+		if($action == 'timeslot'){
+			$timeslot_id = Input::get('timeslot_id');
+			DB::table('course_timeslots')->where('id','=',$timeslot_id)->delete();				
+			return Redirect::to("admin/courses/$id/edit");
+		}else if($action == 'course'){
+			 DB::table('courses')->delete($id);
+	                $section_ids = DB::table('course_sections')->where('course_id','=',$id)->lists('id');
+                	DB::table('course_sections')->where('course_id','=',$id)->delete();
+	                foreach($section_ids as $section_id){
+        	                DB::table('course_timeslots')->where('section_id','=',$section_id)->delete();
+               		}
+			return Redirect::action('AdminCourseController@index');
+		}
+		
 	}
 
 }
