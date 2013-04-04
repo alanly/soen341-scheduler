@@ -13,7 +13,7 @@
         <div class="controls">
           <input type="text" id="description" class="input-xxlarge" name="description" placeholder="Title or brief description of the program." value="{{ Input::old('description', $program->description) }}" required>
           @if( $errors->has('description') )
-          <span class="help-block">{{{ $errors->first('description') }}}</span>
+          {{{ $errors->first('description') }}}
           @endif
         </div>
       </div>

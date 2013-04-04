@@ -165,4 +165,6 @@ Route::group( array('prefix' => 'admin', 'before' => 'auth|admin'), function()
 
   Route::resource('program', 'AdminProgramController');
 
+  Route::resource('option', 'AdminOptionController');
+
 });

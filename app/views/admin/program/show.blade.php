@@ -46,7 +46,7 @@ thead th {
     <tfoot>
       <tr>
         <td colspan="4">
-          {{ Form::open( array('id' => 'add_option_form', 'url' => '/admin/option/create' ) ) }}
+          {{ Form::open( array('id' => 'add_option_form', 'url' => '/admin/option' ) ) }}
             <a href="/admin/option/create" onclick="$('#add_option_form').submit()"><i class="icon-plus-sign"></i> Add a new option.</a>
             {{ Form::token() }}
             {{ Form::hidden('program_id', $program->id) }}
