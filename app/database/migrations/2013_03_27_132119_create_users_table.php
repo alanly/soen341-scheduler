@@ -13,7 +13,8 @@ class CreateUsersTable extends Migration {
 	{
 		Schema::create('users', function($table)
   {
-      $table->string('id')->unique();
+      $table->increments('id');
+      $table->string('university_id')->index();
       $table->string('email')->unique();
       $table->string('password');
       $table->string('name');

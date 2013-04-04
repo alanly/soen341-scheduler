@@ -1,15 +1,19 @@
 @extends('layouts.master')
 
+@section('page_styles')
+  @yield('section_styles')
+@stop
+
 @section('page_title')
-Academic Records
+Profile
 @stop
 
 @section('page_content')
 <div class="row-fluid">
   <div class="span2">
     <ul class="nav nav-list well">
-      <li class="nav-header">Academic Record</li>
-      <li class="active"><a href="/academicrecord">My Academic Record</a></li>
+      <li class="nav-header">Profile</li>
+      <li class="active"><a href="/profile">My Profile</a></li>
     </ul>
   </div>
 
