@@ -26,6 +26,7 @@ thead th {
       <button type="submit" class="btn btn-danger"{{ $option->id == 1 ? ' disabled' : '' }}><i class="icon-fire"></i> Delete Program Option</button>
       {{ Form::token() }}
       {{ Form::hidden('_method', 'delete') }}
+      {{ Form::hidden('data', 'option') }}
     {{ Form::close() }}
   </div>
 </div>

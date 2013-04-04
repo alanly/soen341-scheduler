@@ -5,6 +5,9 @@
 thead th {
   cursor: pointer;
 }
+form {
+  display: inline;
+}
 @stop
 
 
@@ -46,8 +49,8 @@ thead th {
     <tfoot>
       <tr>
         <td colspan="4">
-          {{ Form::open( array('id' => 'add_option_form', 'url' => '/admin/option' ) ) }}
-            <a href="/admin/option/create" onclick="$('#add_option_form').submit()"><i class="icon-plus-sign"></i> Add a new option.</a>
+          {{ Form::open( array('name' => 'add_option_form', 'url' => '/admin/option' ) ) }}
+            <a href="javascript:document.add_option_form.submit()"><i class="icon-plus-sign"></i> Add a new option.</a>
             {{ Form::token() }}
             {{ Form::hidden('program_id', $program->id) }}
           {{ Form::close() }}

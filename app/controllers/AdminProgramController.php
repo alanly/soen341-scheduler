@@ -49,9 +49,15 @@ class AdminProgramController extends BaseController {
       return Redirect::action('AdminProgramController@create')->withErrors($validator)->withInput();
     }
 
-    $program = new Program;
-    $program->description = Input::get('description');
-    $program->save();
+    $program = Program::create(array(
+      'description' => Input::get('description')
+    ));
+
+    $program->programOptions()->save(
+      new ProgramOption(array(
+        'description' => 'None'
+      ))
+    );
 
     return Redirect::action('AdminProgramController@show', array($program->id));
 
@@ -184,6 +190,11 @@ class AdminProgramController extends BaseController {
       Session::flash('action_message', 'The specified program could not be found.');
 
       return Redirect::action('AdminProgramController@index');
+    }
+
+    // Delete program option courses
+    foreach( $program->programOptions() as $o ) {
+      $o->programOptionCourses()->delete();
     }
 
     $program->programOptions()->delete(); // Delete associated program options.

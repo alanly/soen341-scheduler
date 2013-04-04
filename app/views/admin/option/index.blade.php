@@ -42,12 +42,13 @@ thead th {
             <td>{{{ User::where('option_id', $o->id)->count() }}}</td>
             <td>{{{ ProgramOptionCourse::where('option_id', $o->id)->count() }}}</td>
             <td>
-              @if( $o->id != 1 )
+              @if( $o->description != 'None' )
                 <a href="/admin/option/{{ $o->id }}/edit" title="Edit {{{ $o->description }}}."><i class="icon-edit"></i></a>
-                {{ Form::open(array('id' => 'option_' . $o->id . '_delete_form', 'class' => 'delete_form')) }}
-                  <a href="" onclick="$('#option_{{ $o->id }}_delete_form').submit()" title="Delete {{{ $o->description }}}."><i class="icon-trash"></i></a>
+                {{ Form::open(array('name' => 'opt_' . $o->id . '_del_frm', 'class' => 'delete_form', 'url' => '/admin/option/' . $o->id)) }}
+                  <a href="javascript:document.opt_{{ $o->id }}_del_frm.submit()" title="Delete {{{ $o->description }}}."><i class="icon-trash"></i></a>
                   {{ Form::token() }}
                   {{ Form::hidden('_method', 'delete') }}
+                  {{ Form::hidden('data', 'option') }}
                 {{ Form::close() }}
               @endif
             </td>
