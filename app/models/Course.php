@@ -21,9 +21,4 @@ class Course extends Eloquent {
     return $this->hasMany('CourseTimeslot');
   }
 
-  public function schoolSession()
-  {
-    return $this->belongsTo('SchoolSession', 'session_id');
-  }
-
 }

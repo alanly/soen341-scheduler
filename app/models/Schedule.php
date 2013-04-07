@@ -21,4 +21,9 @@ class Schedule extends Eloquent {
     return $this->belongsTo('User');
   }
 
+  public function schoolSession()
+  {
+    return $this->belongsTo('SchoolSession', 'session_id');
+  }
+
 }

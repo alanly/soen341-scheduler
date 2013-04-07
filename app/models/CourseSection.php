@@ -16,4 +16,9 @@ class CourseSection extends Eloquent {
     return $this->belongsTo('Course');
   }
 
+  public function schoolSession()
+  {
+    return $this->belongsTo('SchoolSession', 'session_id');
+  }
+
 }
