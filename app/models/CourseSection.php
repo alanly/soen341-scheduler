@@ -4,6 +4,8 @@ class CourseSection extends Eloquent {
 
   protected $table = 'course_sections';
 
+  protected $guarded = array('id');
+
   public $timestamps = false;
 
   public function courseTimeslots()

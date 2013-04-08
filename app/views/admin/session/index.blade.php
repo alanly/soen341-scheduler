@@ -29,10 +29,12 @@ thead th {
             <td>{{{ $session->code }}}</td>
             <td>{{{ $session->schedules()->count() }}}</td>
             <td>
+              @if( $session->id != 1 )
               {{ Form::open( array( 'url' => '/admin/session/' . $session->id, 'method' => 'DELETE', 'id' => 'delses_' . $session->id . '_frm', 'class' => 'delete_forms' ) ) }}
                 <a onclick="$('#delses_{{ $session->id }}_frm').submit()"><i class="icon-trash"></i></a>
                 {{ Form::token() }}
               {{ Form::close() }}
+              @endif
             </td>
           </tr>
         @endforeach
@@ -50,7 +52,7 @@ thead th {
           <label class="control-label" for="year">Year</label>
 
           <div class="controls">
-            <input type="number" id="year" name="year" min="2012" value="{{{ strftime('%Y') }}}" required>
+            <input type="number" id="year" name="year" class="input-small" min="2012" value="{{{ strftime('%Y') }}}" required>
             {{ $errors->first('year') }}
           </div>
         </div>
@@ -59,10 +61,10 @@ thead th {
           <label class="control-label" for="season">Season</label>
 
           <div class="controls">
-            <select id="season" name="season">
-              <option value="1"{{ Input::old('season') == '1' ? ' selected' : '' }}>Summer</option>
-              <option value="2"{{ Input::old('season') == '2' ? ' selected' : '' }}>Fall</option>
-              <option value="4"{{ Input::old('season') == '4' ? ' selected' : '' }}>Winter</option>
+            <select id="season" name="season" class="input-medium">
+              <option value="1"{{ Input::old('season') == '1' ? ' selected' : '' }}>1 - Summer</option>
+              <option value="2"{{ Input::old('season') == '2' ? ' selected' : '' }}>2 - Fall</option>
+              <option value="4"{{ Input::old('season') == '4' ? ' selected' : '' }}>4 - Winter</option>
             </select>
             {{ $errors->first('season') }}
           </div>

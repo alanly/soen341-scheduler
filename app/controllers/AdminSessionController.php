@@ -76,6 +76,13 @@ class AdminSessionController extends BaseController {
       return Redirect::action('AdminSessionController@index');
     }
 
+    if( $session->id == 1 ) {
+      Session::flash('action_success', false);
+      Session::flash('action_message', 'You cannot remove the default school session.');
+
+      return Redirect::action('AdminSessionController@index');
+    }
+
     $sessionCode = $session->code;
 
     $session->delete();

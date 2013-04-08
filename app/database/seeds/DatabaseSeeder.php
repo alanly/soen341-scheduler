@@ -13,6 +13,7 @@ class DatabaseSeeder extends Seeder {
     $this->call('UserTableSeeder');
     $this->call('ProgramTableSeeder');
     $this->call('ProgramOptionTableSeeder');
+    $this->call('SchoolSessionTableSeeder');
 	}
 
 }
@@ -73,6 +74,15 @@ class ProgramOptionTableSeeder extends Seeder {
     ProgramOption::create( array('program_id' => 3, 'description' => 'Real-Time, Embedded, and Avionics Software') );
     ProgramOption::create( array('program_id' => 3, 'description' => 'Web Services and Applications') );
 
+  }
+
+}
+
+class SchoolSessionTableSeeder extends Seeder {
+
+  public function run()
+  {
+    SchoolSession::create( array('code' => 'None') );
   }
 
 }

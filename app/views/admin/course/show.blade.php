@@ -17,7 +17,7 @@
   <li class="nav-header">Current School Session...</li>
   <li>
     {{ Form::open( array('method' => 'GET', 'class' => 'form-inline', 'id' => 'session_form') ) }}
-      <select id="session" name="session" onchange="$('#session_form').submit()">
+      <select id="session" name="session" onchange="$('#session_form').submit()" class="span12">
         @foreach( $allSessions as $session )
           <option value="{{ $session->id }}"{{ $session->id == $currentSession->id ? ' selected' : '' }}>{{{ $session->code }}}</option>
         @endforeach

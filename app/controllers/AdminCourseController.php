@@ -93,21 +93,7 @@ class AdminCourseController extends BaseController {
     $currentSession = Input::has('session') ? SchoolSession::find( Input::get('session') ) : SchoolSession::orderBy('id', 'desc')->first();
     $courseSections = $course->courseSections()->where('session_id', $currentSession->id)->with('courseTimeslots');
 
-    if( Input::has('session') ) { // Determine what the current school session is.
-      $validator = Validator::make(
-        array('session' => Input::get('session')),
-        array('session' => 'required|exists:school_sessions,id')
-      );
-
-      if( $validator->fails() ) {
-        Session::flash('action_success', false);
-        Session::flash('action_message', 'The specified school session does not exist.');
-      } else {
-        Session::put('schoolSession', Input::get('session'));
-      }
-    }
-
-    $currentSession = Session::has('schoolSession') ? SchoolSession::find( Session::get('schoolSession') ) : SchoolSession::orderBy('id', 'desc')->first();
+    $currentSession = SchoolSession::find( Session::get('schoolSession') );;
 
     return View::make('admin.course.show')
       ->with('course', $course)
@@ -125,7 +111,29 @@ class AdminCourseController extends BaseController {
 	 */
 	public function edit($id)
 	{
-		//
+
+    $course = Course::with('courseSections.courseTimeslots')->where('id', $id)->first();
+
+    if( is_null($course) ) {
+      Session::flash('action_success', false);
+      Session::flash('action_message', 'The course specified does not exist.');
+      return Redirect::action('AdminCourseController@index');
+    }
+
+    $sections = $course->courseSections()->where('session_id', Session::get('schoolSession'))->get();
+
+    $allSessions = SchoolSession::all();
+    $currentSession = SchoolSession::find( Session::get('schoolSession') );
+
+    if( ! Session::has('edit_pane') )
+      Session::flash('edit_pane', Input::has('edit_pane') ? Input::get('tab_pane') : 'course');
+
+    return View::make('admin.course.edit')
+      ->with('course', $course)
+      ->with('sections', $sections)
+      ->with('allSessions', $allSessions)
+      ->with('currentSession', $currentSession);
+
 	}
 
 	/**
