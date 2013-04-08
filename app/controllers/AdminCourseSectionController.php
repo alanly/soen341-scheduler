@@ -75,17 +75,6 @@ class AdminCourseSectionController extends BaseController {
 	}
 
 	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function show($id)
-	{
-		//
-	}
-
-	/**
 	 * Show the form for editing the specified resource.
 	 *
 	 * @param  int  $id
@@ -93,7 +82,21 @@ class AdminCourseSectionController extends BaseController {
 	 */
 	public function edit($id)
 	{
-		//
+
+    $section = CourseSection::with('course')->find($id);
+
+    if( is_null($section) ) {
+      Session::flash('action_success', false);
+      Session::flash('action_message', 'The requested course section does not exist.');
+      return Redirect::action('AdminCourseController@index');
+    }
+
+    $currentSession = SchoolSession::find( Session::get('schoolSession') );
+
+    return View::make('admin.course.edit_section')
+      ->with('section', $section)
+      ->with('currentSession', $currentSession);
+
 	}
 
 	/**
@@ -104,7 +107,40 @@ class AdminCourseSectionController extends BaseController {
 	 */
 	public function update($id)
 	{
-		//
+
+    $section = CourseSection::with('course')->find($id);
+
+    if( is_null($section) ) {
+      Session::flash('action_success', false);
+      Session::flash('action_message', 'The requested course section does not exist.');
+      return Redirect::action('AdminCourseController@index');
+    }
+
+    $validator = Validator::make(
+      Input::all(),
+      array('code' => 'required')
+    );
+
+    if( $validator->fails() ) {
+      Session::flash('action_success', false);
+      Session::flash('action_message', 'There is a mistake with your form. Please correct it and try again.');
+      return Redirect::action('AdminCourseSectionController@edit', array($id))->withErrors($validator)->withInput();
+    }
+
+    $section->code = Input::get('code');
+
+    $action_success = $section->save();
+
+    Session::flash('action_success', $action_success);
+    Session::flash('action_message', $action_success ? 'Course section was updated successfully.' : 'Unable to update course section due to an internal error. Try again later?');
+
+    if($action_success) {
+      Session::flash('edit_pane', 'sections');
+      return Redirect::action('AdminCourseController@edit', array($section->course_id));
+    } else {
+      return Redirect::action('AdminCourseSectionController@edit', array($id))->withInput();
+    }
+
 	}
 
 	/**
