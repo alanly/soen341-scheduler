@@ -66,12 +66,12 @@
 
     <tbody>
       @foreach( $courseSections as $section )
-        <tr class="table-info">
+        <tr class="info">
           <td colspan="7">Section {{{ $section->code }}}</td>
         </tr>
         @if( $section->courseTimeslots()->count() == 0 )
         <tr>
-          <td colspan="7"><p class="text-center">There are currently no timeslots under this section.</p></td>
+          <td colspan="7"><p class="muted text-center">There are currently no timeslots under this section.</p></td>
         </tr>
         @endif
         @foreach( $section->courseTimeslots() as $timeslot )

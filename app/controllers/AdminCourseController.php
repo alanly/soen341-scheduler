@@ -90,10 +90,8 @@ class AdminCourseController extends BaseController {
     }
 
     $allSessions = SchoolSession::all();
-    $currentSession = Input::has('session') ? SchoolSession::find( Input::get('session') ) : SchoolSession::orderBy('id', 'desc')->first();
-    $courseSections = $course->courseSections()->where('session_id', $currentSession->id)->with('courseTimeslots');
-
-    $currentSession = SchoolSession::find( Session::get('schoolSession') );;
+    $currentSession = SchoolSession::find( Session::get('schoolSession') );
+    $courseSections = $course->courseSections()->with('courseTimeslots')->where('session_id', $currentSession->id)->get();
 
     return View::make('admin.course.show')
       ->with('course', $course)
