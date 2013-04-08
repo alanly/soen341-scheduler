@@ -167,4 +167,8 @@ Route::group( array('prefix' => 'admin', 'before' => 'auth|admin'), function()
 
   Route::resource('option', 'AdminOptionController');
 
+  Route::resource('course', 'AdminCourseController');
+
+  Route::resource('session', 'AdminSessionController');
+
 });

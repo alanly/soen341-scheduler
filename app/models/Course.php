@@ -4,6 +4,8 @@ class Course extends Eloquent {
 
   protected $table = 'courses';
 
+  protected $guarded = array('id');
+
   public $timestamps = false;
 
   public function courseConstraints()
