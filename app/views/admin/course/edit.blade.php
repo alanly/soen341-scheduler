@@ -101,10 +101,10 @@
                     <td>{{{ $section->code }}}</td>
                     <td>{{{ $section->courseTimeslots()->count() }}}</td>
                     <td>
-                      <a href="{{ URL::action('AdminCourseSectionController@edit', array($section->id)) }}"><i class="icon-edit"></i></a>
+                      <a href="{{ URL::action('AdminCourseSectionController@edit', array($section->id)) }}" title="Edit this section."><i class="icon-edit"></i></a>
 
                       {{ Form::open( array('method' => 'DELETE', 'url' => URL::action('AdminCourseSectionController@destroy', array($section->id)), 'id' => 'delsec_' . $section->id, 'class' => 'del_frm') ) }}
-                        <a onclick="$('#delsec_{{ $section->id }}').submit()"><i class="icon-trash"></i></a>
+                        <a onclick="$('#delsec_{{ $section->id }}').submit()" title="Delete this section."><i class="icon-trash"></i></a>
                         {{ Form::token() }}
                       {{ Form::close() }}
                     </td>
@@ -150,6 +150,172 @@
       </div>
 
       <div class="tab-pane{{ Session::get('edit_pane') == 'timeslots' ? ' active' : '' }}" id="timeslots">
+        <div class="row-fluid">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Type</th>
+                <th>Code</th>
+                <th>Day</th>
+                <th>Time</th>
+                <th>Location</th>
+                <th>Instructor</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              @if( $courseSections->count() == 0 )
+              <tr><td colspan="7"><p class="muted text-center">There are no sections in this course.</p></td></tr>
+              @endif
+              @foreach( $courseSections as $section )
+                <tr class="info">
+                  <td colspan="7">Section {{{ $section->code }}}</td>
+                </tr>
+
+                @if( $courseSections->courseTimeslots()->count() == 0 )
+                <tr>
+                  <td colspan="7"><p class="muted text-center">There are no timeslots in this section.</p></td>
+                </tr>
+                @endif
+
+                @foreach( $courseSections->courseTimeslots() as $timeslot )
+                  <tr>
+                    <td>{{{ $timeslot->type }}}</td>
+                    <td>{{{ $timeslot->code }}}</td>
+                    <td>{{{ $timeslot->day }}}</td>
+                    <td>{{{ $timeslot->start_time }}} &ndash; {{{ $timeslot->end_time }}}</td>
+                    <td>{{{ $timeslot->location }}}</td>
+                    <td>{{{ $timeslot->instructor }}}</td>
+                    <td>
+                      <a href="/admin/coursetimeslot/{{ $timeslot->id }}/edit" title="Edit this timeslot."><i class="icon-edit"></i></a>
+
+                      {{ Form::open( array('url' => '/admin/coursetimeslot/' . $timeslot->id, 'method' => 'DELETE', 'id' => 'delts_' . $timeslot->id, 'class' => 'del_frm') ) }}
+                        <a onclick="$('#delts_{{ $timeslot->id }}').submit()" title="Delete this timeslot."><i class="icon-trash"></i></a>
+                        {{ Form::token() }}
+                      {{ Form::close() }}
+
+                    </td>
+                  </tr>
+                @endforeach
+              @endforeach
+            </tbody>
+          </table>
+        </div>
+
+        <div class="row-fluid">
+          {{ Form::open( array('url' => '/admin/coursetimeslot', 'class' => 'form-horizontal well') ) }}
+            <fieldset>
+              <legend>Create a new timeslot.</legend>
+
+              <div class="control-group{{ $errors->has('section') ? ' error' : '' }}">
+                <label class="control-label" for="section">Parent Section</label>
+
+                <div class="controls">
+                  <select id="section" name="section" required>
+                    @foreach( $courseSections as $section )
+                    <option value="{{ $section->id }}"{{ $section->id == Input::old('section', '') ? ' selected' : '' }}>{{{ $section->code }}}</option>
+                    @endforeach
+                  </select>
+                  {{ $errors->first('section') }}
+                </div>
+              </div>
+
+              <div class="control-group{{ $errors->has('type') ? ' error' : '' }}">
+                <label class="control-label" for="type">Course Type</label>
+
+                <div class="controls">
+                  <select id="type" name="type" required>
+                    <option value="LECTURE"{{ Input::old('type', '') == 'LECTURE' ? ' selected' : '' }}>Lecture</option>
+                    <option value="TUTORIAL"{{ Input::old('type', '') == 'TUTORIAL' ? ' selected' : '' }}>Tutorial</option>
+                    <option value="LAB"{{ Input::old('type', '') == 'LAB' ? ' selected' : '' }}>Lab</option>
+                  </select>
+                  {{ $errors->first('type') }}
+                </div>
+              </div>
+
+              <div class="control-group{{ $errors->has('code') ? ' error' : '' }}">
+                <label class="control-lable" for="code">Timeslot Code</label>
+
+                <div class="controls">
+                  <input type="text" id="code" name="code" class="input-small" placeholder="e.g. CC" value="{{ Input::old('code') }}" required>
+                  {{ $errors->first('code') }}
+                </div>
+              </div>
+
+              <div class="control-group{{ $errors->has('days') ? ' error' : '' }}">
+                <label class="control-label">Days</label>
+
+                <div class="controls">
+                  <label class="checkbox inline">
+                    <input type="checkbox" id="daysCheckboxSun" name="dateSun"{{ Input::had('dateSun') ? ' checked' : '' }}> Sun
+                  </label>
+                  <label class="checkbox inline">
+                    <input type="checkbox" id="daysCheckboxMon" name="dateMon"{{ Input::had('dateMon') ? ' checked' : '' }}> Mon
+                  </label>
+                  <label class="checkbox inline">
+                    <input type="checkbox" id="daysCheckboxTue" name="dateTue"{{ Input::had('dateTue') ? ' checked' : '' }}> Tue
+                  </label>
+                  <label class="checkbox inline">
+                    <input type="checkbox" id="daysCheckboxWed" name="dateWed"{{ Input::had('dateWed') ? ' checked' : '' }}> Wed
+                  </label>
+                  <label class="checkbox inline">
+                    <input type="checkbox" id="daysCheckboxThu" name="dateThu"{{ Input::had('dateThu') ? ' checked' : '' }}> Thu
+                  </label>
+                  <label class="checkbox inline">
+                    <input type="checkbox" id="daysCheckboxFri" name="dateFri"{{ Input::had('dateFri') ? ' checked' : '' }}> Fri
+                  </label>
+                  <label class="checkbox inline">
+                    <input type="checkbox" id="daysCheckboxSat" name="dateSat"{{ Input::had('dateSat') ? ' checked' : '' }}> Sat
+                  </label>
+                </div>
+              </div>
+
+              <div class="control-group{{ $errors->has('startTime') ? ' error' : '' }}">
+                <label class="control-label" for="startTime">Start Time</label>
+
+                <div class="controls">
+                  <input type="time" id="startTime" name="startTime" value="{{ Input::old('startTime') }}" required>
+                  {{ $errors->first('startTime') }}
+                </div>
+              </div>
+
+              <div class="control-group{{ $errors->has('endTime') ? ' error' : '' }}">
+                <label class="control-label" for="endTime">End Time</label>
+
+                <div class="controls">
+                  <input type="time" id="endTime" name="endTime" value="{{ Input::old('endTime') }}" required>
+                  {{ $errors->first('endTime') }}
+                </div>
+              </div>
+
+              <div class="control-group{{ $errors->has('location') ? ' error' : '' }}">
+                <label class="control-label" for="location">Location</label>
+
+                <div class="controls">
+                  <input type="text" id="location" name="location" placeholder="Physical location where the timeslot is held." value="{{ Input::old('location') }}" required>
+                  {{ $errors->first('location') }}
+                </div>
+              </div>
+
+              <div class="control-group{{ $errors->has('instructor') ? ' error' : '' }}">
+                <label class="control-label" for="instructor">Instructor</label>
+
+                <div class="controls">
+                  <input type="text" id="instructor" name="instructor" placeholder="Name of the instructor that is teaching." value="{{ Input::old('instructor') }}" required>
+                  {{ $errors->first('instructor') }}
+                </div>
+              </div>
+
+              <div class="control-group">
+                <div class="controls">
+                  <button type="submit" class="btn btn-primary"><i class="icon-plus-sign"></i> Create Timeslot</button>
+                </div>
+              </div>
+            </fieldset>
+            {{ Form::token() }}
+          {{ Form::close() }}
+        </div>
       </div>
 
     </div>
