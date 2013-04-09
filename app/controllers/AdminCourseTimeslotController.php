@@ -191,7 +191,35 @@ class AdminCourseTimeslotController extends BaseController {
 	 */
 	public function destroy($id)
 	{
-		//
+
+    $timeslot = CourseTimeslot::with('course','courseSection')->find($id);
+
+    if( is_null($timeslot) ) {
+      Session::flash('action_success', false);
+      Session::flash('action_message', 'The requested course timeslot does not exist.');
+      return Redirect::action('AdminCourseController@index');
+    }
+
+    $course = $timeslot->course()->first();
+    $section = $timeslot->courseSection()->first();
+
+    if( $section->session_id != Session::get('schoolSession') ) {
+      Session::flash('action_success', false);
+      Session::flash('action_message', 'The requested course timeslot does not exist under the currently selected school session.');
+      return Redirect::action('AdminCourseController@index');
+    }
+
+    $timeslot->delete();
+
+    $action_success = is_null(CourseTimeslot::find($id));
+
+    Session::flash('action_success', $action_success);
+    Session::flash('action_message', $action_success ? 'The course timeslot was removed successfully.' : 'Unable to remove the course timeslot due to an internal error. Try again later?');
+
+    Session::flash('edit_pane', 'timeslots');
+
+    return Redirect::action('AdminCourseController@edit', array($course->id));
+
 	}
 
 }
