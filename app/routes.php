@@ -173,4 +173,6 @@ Route::group( array('prefix' => 'admin', 'before' => 'auth|admin|setSchoolSessio
 
   Route::resource('coursesection', 'AdminCourseSectionController');
 
+  Route::resource('coursetimeslot', 'AdminCourseTimeslotController');
+
 });

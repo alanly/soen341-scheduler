@@ -17,7 +17,7 @@ Course Management
 @section('section_content')
   @if( Session::has('action_message') )
   <div class="alert alert-block {{ Session::get('action_success') ? 'alert-success' : 'alert-error' }}">
-    {{{ Session::get('action_message') }}}
+    {{ Session::get('action_message') }}
   </div>
   @endif
 

@@ -165,21 +165,21 @@
             </thead>
 
             <tbody>
-              @if( $courseSections->count() == 0 )
+              @if( $sections->count() == 0 )
               <tr><td colspan="7"><p class="muted text-center">There are no sections in this course.</p></td></tr>
               @endif
-              @foreach( $courseSections as $section )
+              @foreach( $sections as $section )
                 <tr class="info">
                   <td colspan="7">Section {{{ $section->code }}}</td>
                 </tr>
 
-                @if( $courseSections->courseTimeslots()->count() == 0 )
+                @if( $section->courseTimeslots()->count() == 0 )
                 <tr>
                   <td colspan="7"><p class="muted text-center">There are no timeslots in this section.</p></td>
                 </tr>
                 @endif
 
-                @foreach( $courseSections->courseTimeslots() as $timeslot )
+                @foreach( $section->courseTimeslots()->get() as $timeslot )
                   <tr>
                     <td>{{{ $timeslot->type }}}</td>
                     <td>{{{ $timeslot->code }}}</td>
@@ -208,12 +208,20 @@
             <fieldset>
               <legend>Create a new timeslot.</legend>
 
+              <div class="control-group">
+                <label class="control-label">Current School Session</label>
+
+                <div class="controls">
+                  <input type="text" class="input-small" value="{{ $currentSession->code }}" readonly>
+                </div>
+              </div>
+
               <div class="control-group{{ $errors->has('section') ? ' error' : '' }}">
                 <label class="control-label" for="section">Parent Section</label>
 
                 <div class="controls">
                   <select id="section" name="section" required>
-                    @foreach( $courseSections as $section )
+                    @foreach( $sections as $section )
                     <option value="{{ $section->id }}"{{ $section->id == Input::old('section', '') ? ' selected' : '' }}>{{{ $section->code }}}</option>
                     @endforeach
                   </select>
@@ -235,39 +243,44 @@
               </div>
 
               <div class="control-group{{ $errors->has('code') ? ' error' : '' }}">
-                <label class="control-lable" for="code">Timeslot Code</label>
+                <label class="control-label" for="timeslotCode">Timeslot Code</label>
 
                 <div class="controls">
-                  <input type="text" id="code" name="code" class="input-small" placeholder="e.g. CC" value="{{ Input::old('code') }}" required>
+                  <input type="text" id="timeslotCode" name="code" class="input-small" placeholder="e.g. CC" value="{{ Input::old('code') }}" required>
                   {{ $errors->first('code') }}
                 </div>
               </div>
 
-              <div class="control-group{{ $errors->has('days') ? ' error' : '' }}">
+              <div class="control-group{{ $errors->has('dateCheckbox') ? ' error' : '' }}">
                 <label class="control-label">Days</label>
 
                 <div class="controls">
                   <label class="checkbox inline">
-                    <input type="checkbox" id="daysCheckboxSun" name="dateSun"{{ Input::had('dateSun') ? ' checked' : '' }}> Sun
+                    <input type="checkbox" id="daysCheckboxSun" name="dateCheckbox[]"{{ in_array('0', (array)Input::old('dateCheckbox', array())) ? ' checked' : '' }} value="0"> Sun
                   </label>
                   <label class="checkbox inline">
-                    <input type="checkbox" id="daysCheckboxMon" name="dateMon"{{ Input::had('dateMon') ? ' checked' : '' }}> Mon
+                    <input type="checkbox" id="daysCheckboxMon" name="dateCheckbox[]"{{ in_array('1', (array)Input::old('dateCheckbox', array())) ? ' checked' : '' }} value="1"> Mon
                   </label>
                   <label class="checkbox inline">
-                    <input type="checkbox" id="daysCheckboxTue" name="dateTue"{{ Input::had('dateTue') ? ' checked' : '' }}> Tue
+                    <input type="checkbox" id="daysCheckboxTue" name="dateCheckbox[]"{{ in_array('2', (array)Input::old('dateCheckbox', array())) ? ' checked' : '' }} value="2"> Tue
                   </label>
                   <label class="checkbox inline">
-                    <input type="checkbox" id="daysCheckboxWed" name="dateWed"{{ Input::had('dateWed') ? ' checked' : '' }}> Wed
+                    <input type="checkbox" id="daysCheckboxWed" name="dateCheckbox[]"{{ in_array('3', (array)Input::old('dateCheckbox', array())) ? ' checked' : '' }} value="3"> Wed
                   </label>
                   <label class="checkbox inline">
-                    <input type="checkbox" id="daysCheckboxThu" name="dateThu"{{ Input::had('dateThu') ? ' checked' : '' }}> Thu
+                    <input type="checkbox" id="daysCheckboxThu" name="dateCheckbox[]"{{ in_array('4', (array)Input::old('dateCheckbox', array())) ? ' checked' : '' }} value="4"> Thu
                   </label>
                   <label class="checkbox inline">
-                    <input type="checkbox" id="daysCheckboxFri" name="dateFri"{{ Input::had('dateFri') ? ' checked' : '' }}> Fri
+                    <input type="checkbox" id="daysCheckboxFri" name="dateCheckbox[]"{{ in_array('5', (array)Input::old('dateCheckbox', array())) ? ' checked' : '' }} value="5"> Fri
                   </label>
                   <label class="checkbox inline">
-                    <input type="checkbox" id="daysCheckboxSat" name="dateSat"{{ Input::had('dateSat') ? ' checked' : '' }}> Sat
+                    <input type="checkbox" id="daysCheckboxSat" name="dateCheckbox[]"{{ in_array('6', (array)Input::old('dateCheckbox', array())) ? ' checked' : '' }} value="6"> Sat
                   </label>
+                  @if( $errors->has('dateCheckbox') )
+                    <span class="help-block">
+                    {{ $errors->first('dateCheckbox') }}
+                    </span>
+                  @endif
                 </div>
               </div>
 
@@ -275,7 +288,7 @@
                 <label class="control-label" for="startTime">Start Time</label>
 
                 <div class="controls">
-                  <input type="time" id="startTime" name="startTime" value="{{ Input::old('startTime') }}" required>
+                  <input type="time" id="startTime" name="startTime" class="input-small" value="{{ Input::old('startTime') }}" required>
                   {{ $errors->first('startTime') }}
                 </div>
               </div>
@@ -284,7 +297,7 @@
                 <label class="control-label" for="endTime">End Time</label>
 
                 <div class="controls">
-                  <input type="time" id="endTime" name="endTime" value="{{ Input::old('endTime') }}" required>
+                  <input type="time" id="endTime" name="endTime" class="input-small" value="{{ Input::old('endTime') }}" required>
                   {{ $errors->first('endTime') }}
                 </div>
               </div>
@@ -293,7 +306,7 @@
                 <label class="control-label" for="location">Location</label>
 
                 <div class="controls">
-                  <input type="text" id="location" name="location" placeholder="Physical location where the timeslot is held." value="{{ Input::old('location') }}" required>
+                  <input type="text" id="location" name="location" class="input-xlarge" placeholder="Physical location where the timeslot is held." value="{{ Input::old('location') }}" required>
                   {{ $errors->first('location') }}
                 </div>
               </div>
@@ -302,7 +315,7 @@
                 <label class="control-label" for="instructor">Instructor</label>
 
                 <div class="controls">
-                  <input type="text" id="instructor" name="instructor" placeholder="Name of the instructor that is teaching." value="{{ Input::old('instructor') }}" required>
+                  <input type="text" id="instructor" name="instructor" class="input-xlarge" placeholder="Name of the instructor that is teaching." value="{{ Input::old('instructor') }}" required>
                   {{ $errors->first('instructor') }}
                 </div>
               </div>
@@ -314,6 +327,7 @@
               </div>
             </fieldset>
             {{ Form::token() }}
+            {{ Form::hidden('course_id', $course->id) }}
           {{ Form::close() }}
         </div>
       </div>

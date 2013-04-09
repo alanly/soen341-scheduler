@@ -74,7 +74,7 @@
           <td colspan="7"><p class="muted text-center">There are currently no timeslots under this section.</p></td>
         </tr>
         @endif
-        @foreach( $section->courseTimeslots() as $timeslot )
+        @foreach( $section->courseTimeslots()->get() as $timeslot )
           <tr>
             <td>{{{ $timeslot->type }}}</td>
             <td>{{{ $timeslot->code }}}</td>
