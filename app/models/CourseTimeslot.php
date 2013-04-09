@@ -2,7 +2,11 @@
 
 class CourseTimeslot extends Eloquent {
 
+  private $weekdays = array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');
+
   protected $table = 'course_timeslots';
+
+  protected $guarded = array('id');
 
   public $timestamps = false;
 
@@ -14,6 +18,11 @@ class CourseTimeslot extends Eloquent {
   public function courseSection()
   {
     return $this->belongsTo('CourseSection', 'section_id');
+  }
+
+  public function getFriendlyDay()
+  {
+    return $this->weekdays[ $this->day ];
   }
 
 }

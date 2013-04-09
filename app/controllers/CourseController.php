@@ -7,6 +7,9 @@ class CourseController extends BaseController {
 
     $this->beforeFilter('csrf', array('on' => 'post'));
     $this->beforeFilter('auth');
+    $this->beforeFilter('setSchoolSession');
+
+    Session::flash('allSchoolSessions', SchoolSession::all());
 
   }
 
@@ -44,13 +47,16 @@ class CourseController extends BaseController {
   public function getDetails($id)
   {
 
-    $course = Course::find($id);
+    $course = Course::with('courseSections.courseTimeslots')->find($id);
 
     if( is_null($course) )
       App::abort(404, 'Requested course not found.');
 
+    $courseSections = $course->courseSections()->where('session_id', Session::get('schoolSession'));
+
     return View::make('course.details')
-      ->with('course', $course);
+      ->with('course', $course)
+      ->with('courseSections', $courseSections);
 
   }
 

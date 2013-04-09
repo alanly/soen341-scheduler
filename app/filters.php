@@ -67,3 +67,27 @@ Route::filter('csrf', function()
 		throw new Illuminate\Session\TokenMismatchException;
 	}
 });
+
+/*
+ * Set the current session.
+ */
+
+Route::filter('setSchoolSession', function()
+{
+  if( Input::has('session') ) {
+    $validator = Validator::make(
+      array('session' => Input::get('session')),
+      array('session' => 'required|exists:school_sessions,id')
+    );
+
+    if( $validator->fails() ) {
+      Session::flash('action_success', false);
+      Session::flash('action_message', 'The requested section does not exist.');
+    } else {
+      Session::put('schoolSession', Input::get('session'));
+    }
+  } else if( ! Session::has('schoolSession') ) {
+    Session::put('schoolSession', SchoolSession::orderBy('id', 'desc')->first()->id);
+  }
+});
+

@@ -14,9 +14,9 @@ class CreateSchedulesTable extends Migration {
 		Schema::create('schedules', function($table)
 		{
       $table->increments('id');
-      $table->integer('user_id');
+      $table->integer('user_id')->index();
+      $table->integer('session_id')->index();
       $table->timestamps();
-      $table->index('user_id');
 		});
 	}
 

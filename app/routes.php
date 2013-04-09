@@ -63,7 +63,7 @@ Route::post('/register', array('before' => 'guest|csrf', function()
   $rules = array(
     'name' => array('required'),
     'email' => array('required','email','unique:users'),
-    'id' => array('required','numeric','unique:users'),
+    'id' => array('required', 'min:7', 'unique:users,university_id'),
     'password' => array('required','confirmed','min:6'),
     'program' => array('required', 'exists:programs,id'),
     'program_option' => array('required', 'exists:program_options,id')
@@ -153,7 +153,7 @@ Route::controller('course', 'CourseController');
 Route::controller('profile', 'ProfileController');
 
 // Define routes for administrative interface
-Route::group( array('prefix' => 'admin', 'before' => 'auth|admin'), function()
+Route::group( array('prefix' => 'admin', 'before' => 'auth|admin|setSchoolSession'), function()
 {
 
   Route::get('/', function()
@@ -166,5 +166,13 @@ Route::group( array('prefix' => 'admin', 'before' => 'auth|admin'), function()
   Route::resource('program', 'AdminProgramController');
 
   Route::resource('option', 'AdminOptionController');
+
+  Route::resource('course', 'AdminCourseController');
+
+  Route::resource('session', 'AdminSessionController');
+
+  Route::resource('coursesection', 'AdminCourseSectionController');
+
+  Route::resource('coursetimeslot', 'AdminCourseTimeslotController');
 
 });
