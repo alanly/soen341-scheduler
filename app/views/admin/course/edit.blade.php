@@ -230,7 +230,7 @@
               </div>
 
               <div class="control-group{{ $errors->has('type') ? ' error' : '' }}">
-                <label class="control-label" for="type">Course Type</label>
+                <label class="control-label" for="type">Timeslot Type</label>
 
                 <div class="controls">
                   <select id="type" name="type" required>

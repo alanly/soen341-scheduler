@@ -88,7 +88,33 @@ class AdminCourseTimeslotController extends BaseController {
 	 */
 	public function edit($id)
 	{
-		//
+
+    $timeslot = CourseTimeslot::with('course', 'courseSection')->find($id);
+
+    if( is_null($timeslot) ) {
+      Session::flash('action_success', false);
+      Session::flash('action_message', 'The specified course timeslot does not exist.');
+      return Redirect::action('AdminCourseController@index');
+    }
+
+    $course = $timeslot->course()->with('courseSections')->first();
+    $section = $timeslot->courseSection()->first();
+
+    // Make sure this timeslot and the current session matches
+    if( $section->session_id != Session::get('schoolSession') ) {
+      Session::flash('action_success', false);
+      Session::flash('action_message', 'The specified course timeslot does not exist in the currently selected school session.');
+      return Redirect::action('AdminCourseController@index');
+    }
+
+    $allSections = $course->courseSections()->where('session_id', Session::get('schoolSession'))->get();
+
+    return View::make('admin.course.edit_timeslot')
+      ->with('timeslot', $timeslot)
+      ->with('course', $course)
+      ->with('section', $section)
+      ->with('allSections', $allSections);
+
 	}
 
 	/**
@@ -99,7 +125,62 @@ class AdminCourseTimeslotController extends BaseController {
 	 */
 	public function update($id)
 	{
-		//
+
+    $timeslot = CourseTimeslot::with('course', 'courseSection')->find($id);
+
+    if( is_null($timeslot) ) {
+      Session::flash('action_success', false);
+      Session::flash('action_message', 'The specified course timeslot does not exist.');
+      return Redirect::action('AdminCourseController@index');
+    }
+
+    $section = $timeslot->courseSection()->first();
+
+    if( $section->session_id != Session::get('schoolSession') ) {
+      Session::flash('action_success', false);
+      Session::flash('action_message', 'The specified course timeslot does not exist in the currently selected school session.');
+      return Redirect::action('AdminCourseController@index');
+    }
+
+    $rules = array(
+      'section' => 'required|exists:course_sections,id',
+      'type' => 'required|in:LECTURE,TUTORIAL,LAB',
+      'code' => 'required',
+      'date' => 'required|between:0,6',
+      'startTime' => 'required|date_format:"H:i"',
+      'endTime' => 'required|date_format:"H:i"',
+      'location' => 'required',
+      'instructor' => 'required'
+    );
+
+    $validator = Validator::make( Input::all(), $rules );
+
+    if( $validator->fails() ) {
+      Session::flash('action_success', false);
+      Session::flash('action_message', 'There is an error in your form. Please correct it and try again.');
+      return Redirect::action('AdminCourseTimeslotController@edit', array( $timeslot->id ))->withErrors($validator)->withInput();
+    }
+
+    $timeslot->section_id = Input::get('section');
+    $timeslot->type = Input::get('type');
+    $timeslot->code = Input::get('code');
+    $timeslot->day = Input::get('date');
+    $timeslot->start_time = Input::get('startTime');
+    $timeslot->end_time = Input::get('endTime');
+    $timeslot->location = Input::get('location');
+    $timeslot->instructor = Input::get('instructor');
+
+    $action_success = $timeslot->save();
+
+    Session::flash('action_success', $action_success);
+    Session::flash('action_message', $action_success ? 'The course timeslot was successfully updated.' : 'Unable to update course timeslot due to an internal error. Try again later?');
+    Session::flash('edit_pane', 'timeslots');
+
+    if( $action_success )
+      return Redirect::action('AdminCourseController@edit', array( $timeslot->course()->first()->id ));
+    else
+      return Redirect::action('AdminCourseTimeslotController@edit', array( $timeslot->id ))->withInput();
+
 	}
 
 	/**
