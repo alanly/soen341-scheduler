@@ -76,7 +76,7 @@
                                                 <tr>
 							<td>
 								<select name="section" class="input-small">
-								<?php $sections = CourseSection::all();
+								<?php $sections = DB::table('course_sections')->where('course_id', $course->id)->get();
 								foreach($sections as $section){ ?>
 									<option value="<?php echo $section->id; ?>"><?php echo $section->code;?></option>
 								<?php } ?>

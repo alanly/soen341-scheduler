@@ -79,6 +79,52 @@
 		</div>
 		
 	</div>
+<?php
+	$courses = $course::all();
+	//algorithm to get the best possible timeslots
+			
+	$timeslots = CourseTimeslot::all();
+	$sunday = array();
+	$monday = array();
+	$tuesday = array();
+	$wednesday = array();
+	$thursday = array();
+	$friday = array();
+	$saturday = array();
+	foreach($timeslots as $time){
+		switch($time->day){
+			case 0:
+				$sunday[$time->start_time] = $time;
+				break;
+                        case 1:
+                                $monday[$time->start_time] = $time;
+                                break;
+                        case 2:
+                                $tuesday[$time->start_time] = $time;
+                                break;
+                        case 3:
+                                $wednesday[$time->start_time] = $time;
+                                break;
+                        case 4:
+                                $thursday[$time->start_time] = $time;
+                                break;
+                        case 5:
+                                $friday[$time->start_time] = $time;
+                                break;
+                        case 6:
+                                $saturday[$time->start_time] = $time;
+                                break;
+		}
+
+	}
+	print_r($sunday);
+        print_r($monday);
+        print_r($tuesday);
+        print_r($wednesday);
+        print_r($thursday);
+        print_r($friday);
+        print_r($saturday);
+?>
 <footer class="row-fluid">
         <hr>
         <p class="muted pull-left">copyright 2013  DOLLA DOLLA BILL Y'ALL Productions</p>
