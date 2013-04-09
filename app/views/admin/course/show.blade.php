@@ -78,7 +78,7 @@
           <tr>
             <td>{{{ $timeslot->type }}}</td>
             <td>{{{ $timeslot->code }}}</td>
-            <td>{{{ $timeslot->day }}}</td>
+            <td>{{{ $timeslot->getFriendlyDay() }}}</td>
             <td>{{{ $timeslot->start_time }}} &ndash; {{{ $timeslot->end_time }}}</td>
             <td>{{{ $timeslot->location }}}</td>
             <td>{{{ $timeslot->instructor }}}</td>
