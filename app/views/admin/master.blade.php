@@ -11,14 +11,16 @@ Admin: @yield('section_title')
 @section('page_content')
 <div class="row-fluid">
   <div class="span2">
-    <div class="nav nav-list well">
+    <ul class="nav nav-list well">
       <li class="nav-header">Manage...</li>
       <li{{ Request::is('admin/user*') ? ' class="active"' : '' }}><a href="/admin/user">Users</a></li>
+      <li{{ Request::is('admin/session*') ? ' class="active"': '' }}><a href="/admin/session">School Sessions</a></li>
       <li{{ Request::is('admin/program*') ? ' class="active"' : '' }}><a href="/admin/program">Programs</a></li>
       <li{{ Request::is('admin/option*') ? ' class="active"' : '' }}><a href="/admin/option">Program Options</a></li>
-      <li{{ Request::is('admin/course*') ? ' class="active"' : '' }}><a href="/admin/curse">Courses</a></li>
+      <li{{ Request::is('admin/course*') ? ' class="active"' : '' }}><a href="/admin/course">Courses</a></li>
       @yield('section_nav_list')
-    </div>
+    </ul>
+    @yield('section_sidebar')
   </div>
 
   <div class="span10">

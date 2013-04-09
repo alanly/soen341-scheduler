@@ -14,9 +14,9 @@ class CreateCourseSectionsTable extends Migration {
 		Schema::create('course_sections', function($table)
 		{
       $table->increments('id');
-      $table->integer('course_id');
+      $table->integer('course_id')->index();
       $table->string('code');
-      $table->index('course_id');
+      $table->integer('session_id');
 		});
 	}
 

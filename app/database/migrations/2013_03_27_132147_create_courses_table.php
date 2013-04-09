@@ -14,7 +14,6 @@ class CreateCoursesTable extends Migration {
 		Schema::create('courses', function($table)
 		{
       $table->increments('id');
-      $table->integer('session_id');
       $table->string('code');
       $table->string('description');
 		});

@@ -38,7 +38,7 @@ Search Courses
     <tbody>
       @foreach( Session::get('search_results') as $course )
         <tr>
-          <td>{{{ $course->code }}}</td><td>{{{ $course->description }}}</td>
+          <td><a href="/course/details/{{ $course->id }}">{{{ $course->code }}}</a></td><td>{{{ $course->description }}}</td>
         </tr>
       @endforeach 
     </tbody>
