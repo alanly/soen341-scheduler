@@ -152,6 +152,9 @@ Route::controller('course', 'CourseController');
 // Define controller route for Profile
 Route::controller('profile', 'ProfileController');
 
+// Define controller route for Schedules
+Route::controller('schedule', 'ScheduleController');
+
 // Define routes for administrative interface
 Route::group( array('prefix' => 'admin', 'before' => 'auth|admin|setSchoolSession'), function()
 {

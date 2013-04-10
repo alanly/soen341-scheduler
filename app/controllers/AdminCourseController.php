@@ -10,7 +10,7 @@ class AdminCourseController extends BaseController {
 	public function index()
   {
 
-    $courses = Course::with('courseSections')->paginate( Input::get('page_length', 10) );
+    $courses = Course::with('courseSections')->paginate( Session::get('pageLength', 10) );
 
     return View::make('admin.course.index')->with('courses', $courses);
 

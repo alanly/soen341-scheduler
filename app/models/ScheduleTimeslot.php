@@ -11,5 +11,15 @@ class ScheduleTimeslot extends Eloquent {
     return $this->belongsTo('Schedule');
   }
 
+  public function getCourseTimeslot()
+  {
+    return CourseTimeslot::find( $this->course_timeslot_id );
+  }
+
+  public function getCourse()
+  {
+    return $this->getCourseTimeslot()->course()->first();
+  }
+
 }
 
