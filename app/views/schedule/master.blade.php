@@ -16,6 +16,7 @@ Schedules
       <li{{ Request::is('schedule?') ? ' class="active"' : '' }}><a href="/schedule">List Schedules</a></li>
       <li{{ Request::is('schedule/create*') ? ' class="active"' : '' }}><a href="/schedule/create">Generate a Schedule</a></li>
     </ul>
+    <br>
     <ul class="nav nav-list well">
       <li class="nav-header">Current School Session</li>
       <li>

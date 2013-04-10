@@ -69,7 +69,7 @@ Generate a Schedule
         </div>
       </div>
 
-      <div class="control-group{{ $errors->has('courses') ? ' error' :: '' }}">
+      <div class="control-group{{ $errors->has('courses') ? ' error' : '' }}">
         <label class="control-label">Courses</label>
 
         <div class="controls">
