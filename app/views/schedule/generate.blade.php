@@ -20,17 +20,17 @@ Generate a Schedule
 
         <div class="controls">
           <label class="checkbox inline">
-            <input type="checkbox" id="timesMorn" name="times[]" value="0"{{ !in_array('0', (array)Input::old('times', array())) ? '' : ' checked' }}>
+            <input type="checkbox" id="timesMorn" name="times[]" value="0"{{ Input::old('times') != null ? (in_array('0', (array)Input::old('times', array())) ? ' checked' : '') : ' checked' }}>
             Mornings (00:00 &ndash; 12:00)
           </label>
 
           <label class="checkbox inline">
-            <input type="checkbox" id="timesNoon" name="times[]" value="1"{{ !in_array('1', (array)Input::old('times', array())) ? '' : ' checked' }}>
-            Afternoon (12:00 &ndash; 17:00)
+            <input type="checkbox" id="timesNoon" name="times[]" value="1"{{ Input::old('times') != null ? (in_array('1', (array)Input::old('times', array())) ? ' checked' : '') : ' checked' }}>
+            Afternoons (12:00 &ndash; 17:00)
           </label>
 
           <label class="checkbox inline">
-            <input type="checkbox" id="timesEven" name="times[]" value="2"{{ !in_array('0', (array)Input::old('times', array())) ? '' : ' checked' }}>
+            <input type="checkbox" id="timesEven" name="times[]" value="2"{{ Input::old('times') != null ? (in_array('2', (array)Input::old('times', array())) ? ' checked' : '') : ' checked' }}>
             Evenings (17:00 &ndash; 23:00)
           </label>
         </div>
@@ -41,25 +41,25 @@ Generate a Schedule
 
         <div class="controls">
           <label class="checkbox inline">
-            <input type="checkbox" id="daysSun" name="dates[]"{{ !in_array('0', (array)Input::old('dates', array())) ? '' : ' checked' }} value="0"> Sun
+            <input type="checkbox" id="daysSun" name="dates[]"{{ Input::old('dates') != null ? (in_array('0', (array)Input::old('dates', array())) ? ' checked' : '') : ' checked' }} value="0"> Sun
           </label>
           <label class="checkbox inline">
-            <input type="checkbox" id="daysMon" name="dates[]"{{ !in_array('1', (array)Input::old('dates', array())) ? '' : ' checked' }} value="1"> Mon
+            <input type="checkbox" id="daysMon" name="dates[]"{{ Input::old('dates') != null ? (in_array('1', (array)Input::old('dates', array())) ? ' checked' : '') : ' checked' }} value="1"> Mon
           </label>
           <label class="checkbox inline">
-            <input type="checkbox" id="daysTue" name="dates[]"{{ !in_array('2', (array)Input::old('dates', array())) ? '' : ' checked' }} value="2"> Tue
+            <input type="checkbox" id="daysTue" name="dates[]"{{ Input::old('dates') != null ? (in_array('2', (array)Input::old('dates', array())) ? ' checked' : '') : ' checked' }} value="2"> Tue
           </label>
           <label class="checkbox inline">
-            <input type="checkbox" id="daysWed" name="dates[]"{{ !in_array('3', (array)Input::old('dates', array())) ? '' : ' checked' }} value="3"> Wed
+            <input type="checkbox" id="daysWed" name="dates[]"{{ Input::old('dates') != null ? (in_array('3', (array)Input::old('dates', array())) ? ' checked' : '') : ' checked' }} value="3"> Wed
           </label>
           <label class="checkbox inline">
-            <input type="checkbox" id="daysThu" name="dates[]"{{ !in_array('4', (array)Input::old('dates', array())) ? '' : ' checked' }} value="4"> Thu
+            <input type="checkbox" id="daysThu" name="dates[]"{{ Input::old('dates') != null ? (in_array('4', (array)Input::old('dates', array())) ? ' checked' : '') : ' checked' }} value="4"> Thu
           </label>
           <label class="checkbox inline">
-            <input type="checkbox" id="daysFri" name="dates[]"{{ !in_array('5', (array)Input::old('dates', array())) ? '' : ' checked' }} value="5"> Fri
+            <input type="checkbox" id="daysFri" name="dates[]"{{ Input::old('dates') != null ? (in_array('5', (array)Input::old('dates', array())) ? ' checked' : '') : ' checked' }} value="5"> Fri
           </label>
           <label class="checkbox inline">
-            <input type="checkbox" id="daysSat" name="dates[]"{{ !in_array('6', (array)Input::old('dates', array())) ? '' : ' checked' }} value="6"> Sat
+            <input type="checkbox" id="daysSat" name="dates[]"{{ Input::old('dates') != null ? (in_array('6', (array)Input::old('dates', array())) ? ' checked' : '') : ' checked' }} value="6"> Sat
           </label>
           @if( $errors->has('dates') )
             <span class="help-block">
@@ -104,6 +104,12 @@ Generate a Schedule
           </div>
 
           {{ $errors->first('courses') }}
+        </div>
+      </div>
+
+      <div class="control-group">
+        <div class="controls">
+          <button type="submit" class="btn btn-primary"><i class="icon-cog icon-spinner"></i> Generate Schedule</button>
         </div>
       </div>
     </fieldset>
