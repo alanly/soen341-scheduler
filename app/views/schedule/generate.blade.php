@@ -79,7 +79,7 @@ Generate a Schedule
               'class' => 'form-inline'
             )) }}
 
-              <select id="courses" name="courses" class="input-large" required>
+              <select id="courses" name="courses" class="input-xxlarge" required>
                 @foreach( $allCourses as $course )
                   <option value="{{ $course->id }}">{{{ $course->code }}} &ndash; {{{ $course->description }}}</option>
                 @endforeach
@@ -96,7 +96,7 @@ Generate a Schedule
                 @if( !(Session::has('schedGenCourses')) || count(Session::get('schedGenCourses')) == 0 )
                   <tr><td><p class="muted">No courses selected yet.</p></td></tr>
                 @endif
-                @foreach( Session::get('schedGenCourses') as $course )
+                @foreach( Session::get('schedGenCourses', array()) as $course )
                   <tr><td><a href="/course/details/{{ $course->id }}" target="_blank">{{{ $course->code }}} &ndash; {{{ $course->description }}}</a></td></tr>
                 @endforeach
               </tbody>
