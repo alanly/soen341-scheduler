@@ -26,7 +26,9 @@ class ScheduleController extends BaseController {
   public function getCreate()
   {
 
-    return View::make('schedule.generate');
+    $allCourses = Course::all();
+
+    return View::make('schedule.generate')->with('allCourses', $allCourses);
 
   }
 
