@@ -35,16 +35,57 @@ class ScheduleController extends BaseController {
 
     return View::make('schedule.generate')
       ->with('allCourses', $allCourses)
-      ->with('selectedCourses' $selectedCourses);
+      ->with('selectedCourses', $selectedCourses);
 
+  }
+
+  public function postCreate()
+  {
+
+    Session::forget('schedSelectedCourses');
+    return "hello";
   }
 
   public function postCourse()
   {
 
-    if( ! Input::has('course') ) {
+    $course = Course::find( Input::get('course') );
 
+    if( is_null($course) ) {
+      Session::flash('action_success', false);
+      Session::flash('action_message', 'The specified course does not exist.');
+      return Redirect::action('ScheduleController@getCreate')->withInput();
     }
+
+    $schedSelectedCourses = Session::get('schedSelectedCourses', array());
+
+    if( ! in_array( $course->id, $schedSelectedCourses ) )
+      $schedSelectedCourses[] = $course->id;
+
+    Session::put('schedSelectedCourses', $schedSelectedCourses);
+
+    return Redirect::action('ScheduleController@getCreate');
+
+  }
+
+  public function deleteCourse()
+  {
+
+    if( ! Input::has('course_id') ) {
+      Session::flash('action_success', false);
+      Session::flash('action_message', 'There was no course specified for removal.');
+      return Redirect::action('ScheduleController@getCreate')->withInput();
+    }
+
+    $schedSelectedCourses = Session::get('schedSelectedCourses', array());
+
+    if( in_array(Input::get('course_id'), $schedSelectedCourses) ) {
+      $pos = array_search( Input::get('course_id'), $schedSelectedCourses );
+      array_splice( $schedSelectedCourses, $pos, 1 );
+      Session::put('schedSelectedCourses', $schedSelectedCourses);
+    }
+
+    return Redirect::action('ScheduleController@getCreate');
 
   }
 

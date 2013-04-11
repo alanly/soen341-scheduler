@@ -1,6 +1,17 @@
 @extends('schedule.master')
 
 
+@section('section_styles')
+.delcourse_frm {
+  display: inline;
+  margin-left: 10px;
+}
+.delcourse_frm a {
+  cursor: pointer;
+}
+@stop
+
+
 @section('section_title')
 Generate a Schedule
 @stop
@@ -10,7 +21,7 @@ Generate a Schedule
 <div class="row-fluid">
   <div class="well">
     <div class="page-header">
-      <h3>1. Select the courses that you'd like.</h3>
+      <p class="lead">1. Select the courses that you'd like.</p>
     </div>
 
     <div class="row-fluid">
@@ -42,8 +53,6 @@ Generate a Schedule
       {{ Form::close() }}
     </div>
 
-    <hr>
-
     <div class="row-fluid">
       <table class="table table-hover">
         <tbody>
@@ -52,17 +61,19 @@ Generate a Schedule
           @else
             @foreach( $selectedCourses as $course )
               <tr>
-                <td>{{{ $course->code }}} &ndash; {{{ $course->description }}}</td>
                 <td>
-                  {{{ Form::open(array(
+                  <a href="/course/details/{{ $course->id }}" target="_blank">{{{ $course->code }}} &ndash; {{{ $course->description }}}</a>
+
+                  {{ Form::open(array(
                     'id' => 'delcourse_' . $course->id,
+                    'class' => 'delcourse_frm',
                     'url' => '/schedule/course',
                     'method' => 'DELETE'
-                  )) }}}
+                  )) }}
                     <a onclick="$('#delcourse_{{ $course->id }}').submit()" title="Remove this specific course from the selection."><i class="icon-trash"></i></a>
                     {{ Form::token() }}
                     {{ Form::hidden('course_id', $course->id) }}
-                  {{{ Form::close() }}}
+                  {{ Form::close() }}
                 </td>
               </tr>
             @endforeach
@@ -76,7 +87,7 @@ Generate a Schedule
 <div class="row-fluid">
   <div class="well">
     <div class="page-header">
-      <h3>2. Select your schedule preferences and generate.</h3>
+      <p class="lead">2. Select your schedule preferences and generate.</p>
     </div>
 
     <div class="row-fluid">
