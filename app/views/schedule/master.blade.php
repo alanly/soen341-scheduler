@@ -36,6 +36,12 @@ Schedules
       <h2>@yield('section_title')</h2>
     </header>
 
+    @if( Session::has('action_message') )
+      <div class="alert alert-block{{ Session::get('action_success') ? ' success' : ' error' }}">
+        {{ Session::get('action_message') }}
+      </div>
+    @endif
+
     @yield('section_content')
   </div>
 </div>

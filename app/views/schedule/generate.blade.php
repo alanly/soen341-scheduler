@@ -9,7 +9,7 @@ Generate a Schedule
 @section('section_content')
 <div class="row-fluid">
   {{ Form::open(array(
-    'url' => '/schedule',
+    'id' => 'generateForm',
     'class' => 'form-horizontal well'
   )) }}
     <fieldset>
@@ -74,29 +74,20 @@ Generate a Schedule
 
         <div class="controls">
           <div>
-            {{ Form::open(array(
-              'url' => '/schedule',
-              'class' => 'form-inline'
-            )) }}
+            <select id="courses" name="courses" class="input-xxlarge" required>
+              @foreach( $allCourses as $course )
+                <option value="{{ $course->id }}">{{{ $course->code }}} &ndash; {{{ $course->description }}}</option>
+              @endforeach
+            </select>
 
-              <select id="courses" name="courses" class="input-xxlarge" required>
-                @foreach( $allCourses as $course )
-                  <option value="{{ $course->id }}">{{{ $course->code }}} &ndash; {{{ $course->description }}}</option>
-                @endforeach
-              </select>
-
-              <button type="submit" class="btn"><i class="icon-plus"></i></button>
-
-              {{ Form::token() }}
-              {{ Form::hidden('data', 'courses') }}
-            {{ Form::close() }}
+            <button type="submit" name="data" value="courses" class="btn"><i class="icon-plus"></i></button>
 
             <table>
               <tbody>
                 @if( !(Session::has('schedGenCourses')) || count(Session::get('schedGenCourses')) == 0 )
                   <tr><td><p class="muted">No courses selected yet.</p></td></tr>
                 @endif
-                @foreach( Session::get('schedGenCourses', array()) as $course )
+                @foreach( $courses as $course )
                   <tr><td><a href="/course/details/{{ $course->id }}" target="_blank">{{{ $course->code }}} &ndash; {{{ $course->description }}}</a></td></tr>
                 @endforeach
               </tbody>
@@ -109,12 +100,11 @@ Generate a Schedule
 
       <div class="control-group">
         <div class="controls">
-          <button type="submit" class="btn btn-primary"><i class="icon-cog icon-spinner"></i> Generate Schedule</button>
+          <button type="submit" name="data" value="generate" class="btn btn-primary"><i class="icon-cog icon-spinner"></i> Generate Schedule</button>
         </div>
       </div>
     </fieldset>
     {{ Form::token() }}
-    {{ Form::hidden('data', 'generate') }}
   {{ Form::close() }}
 </div>
 @stop

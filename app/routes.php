@@ -40,6 +40,7 @@ Route::post('/login', array('before' => 'guest|csrf', function()
 // Route for `logout` GET
 Route::get('/logout', function()
 {
+  Session::flush();
   Auth::logout();
   return Redirect::to('/');
 });
