@@ -27,22 +27,23 @@ class ScheduleController extends BaseController {
   {
 
     $allCourses = Course::all();
+    $schedSelectedCourses = Session::get('schedSelectedCourses', array());
+    $selectedCourses = array();
 
-    $courseList = Session::get('schedGenCourses', array());
+    foreach( $schedSelectedCourses as $course_id )
+      $selectedCourses[] = Course::find($course_id);
 
-    $courses = array();
-
-    foreach($courseList as $id)
-      $courses[] = Course::find($id);
-
-    return View::make('schedule.generate')->with('allCourses', $allCourses)->with('courses', $courses);
+    return View::make('schedule.generate')
+      ->with('allCourses', $allCourses)
+      ->with('selectedCourses', $selectedCourses);
 
   }
-   public function postCreate()
+
+  public function postCreate()
   {
 
     Session::forget('schedSelectedCourses');
-    return View::make('schedule.schedule_generate');
+	return View::make('schedule.schedule_generate');
   }
 
   public function postCourse()
@@ -66,43 +67,26 @@ class ScheduleController extends BaseController {
     return Redirect::action('ScheduleController@getCreate');
 
   }
-   function createCoursesHandler()
+
+  public function deleteCourse()
   {
 
-    $course = Course::find( Input::get('courses') );
-
-    if( is_null($course) ) {
+    if( ! Input::has('course_id') ) {
       Session::flash('action_success', false);
-     Session::flash('action_message', 'The course specified does not exist.');
+      Session::flash('action_message', 'There was no course specified for removal.');
       return Redirect::action('ScheduleController@getCreate')->withInput();
     }
 
-    $courseList = Session::has('schedGenCourses') ? Session::get('schedGenCourses') : array();
+    $schedSelectedCourses = Session::get('schedSelectedCourses', array());
 
-    if( ! in_array( $course->id, $courseList ) )
-      $courseList[] = $course->id;
+    if( in_array(Input::get('course_id'), $schedSelectedCourses) ) {
+      $pos = array_search( Input::get('course_id'), $schedSelectedCourses );
+      array_splice( $schedSelectedCourses, $pos, 1 );
+      Session::put('schedSelectedCourses', $schedSelectedCourses);
+    }
 
-    Session::put('schedGenCourses', $courseList);
-
-    return Redirect::action('ScheduleController@getCreate')->withInput();
-
-  }
-
-  private function createGenerateHandler()
-  {
-
-    Session::forget('schedGenCourses');
-    Session::flash('action_success', true);
-    Session::flash('action_message', 'Schedules generated.');
+    return Redirect::action('ScheduleController@getCreate');
 
   }
-  public function postSave(){
-	$timeslots = Session::get("schedule");
-	$uid = Auth::user()->id;
-	$schedule_id = Schedule::create(array('user_id' => $uid))->id;
-	foreach ($timeslots as $id){
-		ScheduleTimeslot::create((array("schedule_id" => $schedule_id, "course_timeslot_id"=> $id)));
-	}
-	return Redirect::action('ScheduleController@getIndex');	
-  }
+
 }
