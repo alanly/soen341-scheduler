@@ -18,7 +18,7 @@ List Schedules
       <div class="accordion-group">
         <div class="accordion-heading">
           <a class="accordion-toggle" data-toggle="collapse" data-parent="#schedule_list" href="#sched_{{ strtotime($schedule->created_at) }}">
-            Schedule {{{ $schedule->created }}}
+            Schedule {{{ $schedule->created_at }}}
           </a>
         </div>
 

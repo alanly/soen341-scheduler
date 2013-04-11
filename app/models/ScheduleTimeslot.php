@@ -3,6 +3,7 @@
 class ScheduleTimeslot extends Eloquent {
 
   protected $table = 'schedule_timeslots';
+  protected $guarded = array('id');
 
   public $timestamps = false;
 

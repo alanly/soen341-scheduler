@@ -38,37 +38,42 @@ class ScheduleController extends BaseController {
     return View::make('schedule.generate')->with('allCourses', $allCourses)->with('courses', $courses);
 
   }
-
-  public function postCreate()
+   public function postCreate()
   {
 
-    if( ! Input::has('data') ) {
-      Session::flash('action_success', false);
-      Session::flash('action_message', 'The dataset attribute was not specified. Unable to continue with the request.');
-      return Redirect::action('ScheduleController@getCreate')->withInput();
-    }
-
-    switch( Input::get('data') ) {
-    case 'courses':
-      return $this->createCoursesHandler();
-    case 'generate':
-      return $this->createGenerateHandler();
-    default:
-      Session::flash('action_success', false);
-      Session::flash('action_message', 'An invalid dataset attribute was specified. Unable to continue with the reqeust.');
-      return Redirect::action('ScheduleController@getCreate')->withInput();
-    }
-
+    Session::forget('schedSelectedCourses');
+    return View::make('schedule.schedule_generate');
   }
 
-  private function createCoursesHandler()
+  public function postCourse()
+  {
+
+    $course = Course::find( Input::get('course') );
+
+    if( is_null($course) ) {
+      Session::flash('action_success', false);
+      Session::flash('action_message', 'The specified course does not exist.');
+      return Redirect::action('ScheduleController@getCreate')->withInput();
+    }
+
+    $schedSelectedCourses = Session::get('schedSelectedCourses', array());
+
+    if( ! in_array( $course->id, $schedSelectedCourses ) )
+      $schedSelectedCourses[] = $course->id;
+
+    Session::put('schedSelectedCourses', $schedSelectedCourses);
+
+    return Redirect::action('ScheduleController@getCreate');
+
+  }
+   function createCoursesHandler()
   {
 
     $course = Course::find( Input::get('courses') );
 
     if( is_null($course) ) {
       Session::flash('action_success', false);
-      Session::flash('action_message', 'The course specified does not exist.');
+     Session::flash('action_message', 'The course specified does not exist.');
       return Redirect::action('ScheduleController@getCreate')->withInput();
     }
 
@@ -91,5 +96,13 @@ class ScheduleController extends BaseController {
     Session::flash('action_message', 'Schedules generated.');
 
   }
-
+  public function postSave(){
+	$timeslots = Session::get("schedule");
+	$uid = Auth::user()->id;
+	$schedule_id = Schedule::create(array('user_id' => $uid))->id;
+	foreach ($timeslots as $id){
+		ScheduleTimeslot::create((array("schedule_id" => $schedule_id, "course_timeslot_id"=> $id)));
+	}
+	return Redirect::action('ScheduleController@getIndex');	
+  }
 }
