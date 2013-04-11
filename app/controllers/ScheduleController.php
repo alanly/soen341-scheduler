@@ -27,68 +27,24 @@ class ScheduleController extends BaseController {
   {
 
     $allCourses = Course::all();
+    $schedSelectedCourses = Session::get('schedSelectedCourses', array());
+    $selectedCourses = array();
 
-    $courseList = Session::get('schedGenCourses', array());
+    foreach( $schedSelectedCourses as $course_id )
+      $selectedCourses[] = Course::find($course_id);
 
-    $courses = array();
-
-    foreach($courseList as $id)
-      $courses[] = Course::find($id);
-
-    return View::make('schedule.generate')->with('allCourses', $allCourses)->with('courses', $courses);
-
-  }
-
-  public function postCreate()
-  {
-
-    if( ! Input::has('data') ) {
-      Session::flash('action_success', false);
-      Session::flash('action_message', 'The dataset attribute was not specified. Unable to continue with the request.');
-      return Redirect::action('ScheduleController@getCreate')->withInput();
-    }
-
-    switch( Input::get('data') ) {
-    case 'courses':
-      return $this->createCoursesHandler();
-    case 'generate':
-      return $this->createGenerateHandler();
-    default:
-      Session::flash('action_success', false);
-      Session::flash('action_message', 'An invalid dataset attribute was specified. Unable to continue with the reqeust.');
-      return Redirect::action('ScheduleController@getCreate')->withInput();
-    }
+    return View::make('schedule.generate')
+      ->with('allCourses', $allCourses)
+      ->with('selectedCourses' $selectedCourses);
 
   }
 
-  private function createCoursesHandler()
+  public function postCourse()
   {
 
-    $course = Course::find( Input::get('courses') );
+    if( ! Input::has('course') ) {
 
-    if( is_null($course) ) {
-      Session::flash('action_success', false);
-      Session::flash('action_message', 'The course specified does not exist.');
-      return Redirect::action('ScheduleController@getCreate')->withInput();
     }
-
-    $courseList = Session::has('schedGenCourses') ? Session::get('schedGenCourses') : array();
-
-    if( ! in_array( $course->id, $courseList ) )
-      $courseList[] = $course->id;
-
-    Session::put('schedGenCourses', $courseList);
-
-    return Redirect::action('ScheduleController@getCreate')->withInput();
-
-  }
-
-  private function createGenerateHandler()
-  {
-
-    Session::forget('schedGenCourses');
-    Session::flash('action_success', true);
-    Session::flash('action_message', 'Schedules generated.');
 
   }
 
