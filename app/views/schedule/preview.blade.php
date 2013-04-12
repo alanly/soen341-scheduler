@@ -1,6 +1,14 @@
 @extends('schedule.master')
 
 
+@section('section_styles')
+.course-block {
+  background-color: #f9f9f9;
+  font-weight: 600;
+}
+@stop
+
+
 @section('section_title')
 Generate a Schedule
 @stop
@@ -20,7 +28,7 @@ Generate a Schedule
 </div>
 
 <div class="row-fluid">
-  <table class="table table-bordered">
+  <table class="table table-bordered table-hover">
     <thead>
       <tr>
         <th>Time</th><th>Sunday</th><th>Monday</th><th>Tuesday</th><th>Wednesday</th><th>Thursday</th><th>Friday</th><th>Saturday</th>
@@ -40,6 +48,8 @@ Generate a Schedule
       ?>
 
       <?php
+        $colSkipForRows = array();
+
         for ($i = 0; $i < $totalRows; $i++) {
           $minute = $counter * 15;
           $time = "$hour:" . ($minute== 0? "00":$minute);
@@ -47,7 +57,7 @@ Generate a Schedule
           echo "<tr id='$time'>";
           echo "<th>$time</th>";
 
-          foreach( $d = 0; $d < 7; $d++ )
+          for( $d = 0; $d < 7; $d++ )
           {
 
             $day = $days[$d];
@@ -56,15 +66,24 @@ Generate a Schedule
               $slot = $day[$time];
               $to_time = strtotime($slot->start_time);
               $from_time = strtotime($slot->end_time);
-              $rows = round(abs($to_time - $from_time) / 60, 2) / 15;
+              $rows = round((abs($to_time - $from_time) / 60), 2) / 15;
 
-              echo '<td class="course-block" rowspan="' . $rows . '">' . $slot->course()->code . '<br>' . $slot->type . ' ' . $slot->code . '</td>'.
+              for( $r = 0; $r < $rows; $r++)
+                if( isset($colSkipForRows[$d][$i + $r]) )
+                  $colSkipForRows[$d][$i + $r]++;
+                else
+                  $colSkipForRows[$d][$i + $r] = 1;
+
+              echo '<td class="course-block" rowspan="' . $rows . '">' . $slot->course()->first()->code . '<br>' . $slot->type . ' ' . $slot->code . '</td>'.
 
               $day['no_print_rows'] = $rows - 1;
-            } else if( isset($day['no_print_rows']) && $day['no_print_rows'] > 0  ) {
-              $day['no_print_rows']--;
+//            } else if( isset($day['no_print_rows']) && $day['no_print_rows'] > 0  ) {
+  //            $day['no_print_rows']--;
             } else {
-              echo "<td></td>";
+              if( isset($colSkipForRows[$d][$i]) && $colSkipForRows[$d][$i] != 0 )
+                $colSkipForRows[$d][$i]--;
+              else
+                echo "<td></td>";
             }
 
           }

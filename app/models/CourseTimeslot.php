@@ -12,7 +12,7 @@ class CourseTimeslot extends Eloquent {
 
   public function course()
   {
-    return $this->belongsTo('Course');
+    return $this->belongsTo('Course', 'course_id');
   }
 
   public function courseSection()
