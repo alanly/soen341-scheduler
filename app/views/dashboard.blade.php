@@ -12,6 +12,9 @@ Dashboard
       <br>
       @if( count( Auth::user()->schedules ) == 0 )
         <p class="lead">You have not generated any schedules yet. <a href="/schedule/generate">Would you like to?</a></p>
+      @else
+        <p class="lead">You currently have {{{ Auth::user()->schedules()->count() }}} saved schedules.</p>
+        <p>Would you like to <a href="/schedule/view/{{ Auth::user()->schedules()->orderBy('id', 'desc')->first()->id }}">view the latest schedule</a> or <a href="/schedule/generate">generate a new one</a>?</p>
       @endif
     </article>
   </div>
