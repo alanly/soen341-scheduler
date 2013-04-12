@@ -23,6 +23,11 @@ class ScheduleController extends BaseController {
 
   }
 
+  public function getView($id)
+  {
+    return "Hello, schedule $id.";
+  }
+
   public function getCreate()
   {
 
@@ -121,41 +126,47 @@ class ScheduleController extends BaseController {
       6 => array()
     );
 
+    // Create hard copy of array
+    $filteredTimeslots = array();
+
+    foreach( $timeslots as $k => $v )
+      $filteredTimeslots[$k] = clone $v;
+
     // Check the Time Constraints
 
     foreach( $timeslots as $i => &$t ) {
       // Mornings Constraint
       if( $timeConstraints[0] == 0 )
         if( strtotime($t->end_time) <= strtotime('12:00') ) {
-          $timeslots = $this->unsetTimeslotsBySection($timeslots, $t->section_id);
+          $filteredTimeslots = $this->unsetTimeslotsBySection($filteredTimeslots, $t->section_id);
           continue;
         }
 
       // Afternoon Constraint
       if( $timeConstraints[1] == 0 )
         if( strtotime($t->start_time) >= strtotime('12:00') && strtotime($t->end_time) <= strtotime('17:00') ) {
-          $timeslots = $this->unsetTimeslotsBySection($timeslots, $t->section_id);
+          $filteredTimeslots = $this->unsetTimeslotsBySection($filteredTimeslots, $t->section_id);
           continue;
         }
 
       // Evening Constraint
       if( $timeConstraints[2] == 0 )
         if( strtotime($t->start_time) >= strtotime('17:00') )
-          $timeslots = $this->unsetTimeslotsBySection($timeslots, $t->section_id);
+          $filteredTimeslots = $this->unsetTimeslotsBySection($filteredTimeslots, $t->section_id);
     }
 
     // Check the Date Constraints
     
-    foreach( $timeslots as $i => &$t )
+    foreach( $timeslots as $t )
       for($d = 0; $d < 7; $d++)
         if( $dateConstraints[$d] == 0 && $t->day == $d )
-          $timeslots = $this->unsetTimeslotsBySection($timeslots, $t->section_id);
+          $filteredTimeslots = $this->unsetTimeslotsBySection($filteredTimeslots, $t->section_id);
 
     $earliest = '24:00';
     $latest = '0:00';
 
     // Generate the calendar
-    foreach( $timeslots as $slot ) {
+    foreach( $filteredTimeslots as $slot ) {
 
       // Determine the epoch time equivalents.
       $slotStart = strtotime($slot->start_time);
@@ -174,7 +185,12 @@ class ScheduleController extends BaseController {
 
     }
 
-    Session::put('schedTimeslots', $timeslots);
+    $sessionTimeslots = array();
+
+    foreach( $filteredTimeslots as $t )
+      $sessionTimeslots[] = $t->id;
+
+    Session::put('schedTimeslots', $sessionTimeslots);
 
     $schoolSession = SchoolSession::find( Session::get('schoolSession') );
 
@@ -189,13 +205,11 @@ class ScheduleController extends BaseController {
   private function unsetTimeslotsBySection($timeslots, $sectionId)
   {
 
-    $updatedTimeslots = $timeslots;
+    foreach( $timeslots as $i => $slot )
+      if( $slot->section_id == $sectionId )
+        unset($timeslots[$i]);
 
-    for($i = 0; $i < count($updatedTimeslots); $i++)
-      if( $updatedTimeslots[$i]->section_id == $sectionId )
-        unset($updatedTimeslots[$i]);
-
-    return $updatedTimeslots;
+    return $timeslots;
 
   }
 
@@ -262,7 +276,7 @@ class ScheduleController extends BaseController {
   public function postSave()
   {
 
-    $timeslots = Session::get('schedTimeslots', array());
+    $timeslots = Session::get('schedTimeslots');
 
     if( count($timeslots) == 0 ) {
       Session::flash('action_success', false);
@@ -279,7 +293,7 @@ class ScheduleController extends BaseController {
     foreach( $timeslots as $slot )
       $schedule->scheduleTimeslots()->save(new ScheduleTimeslot(
         array(
-          'course_timeslot_id' => $slot->id
+          'course_timeslot_id' => $slot
         )
       ));
 

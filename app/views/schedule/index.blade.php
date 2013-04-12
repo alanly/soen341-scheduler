@@ -18,7 +18,7 @@ List Schedules
       <div class="accordion-group">
         <div class="accordion-heading">
           <a class="accordion-toggle" data-toggle="collapse" data-parent="#schedule_list" href="#sched_{{ strtotime($schedule->created_at) }}">
-            Schedule {{{ $schedule->created }}}
+            Schedule {{{ $schedule->created_at }}}
           </a>
         </div>
 
@@ -26,14 +26,14 @@ List Schedules
           <div class="accordion-inner">
             <div class="span6">
               <ul>
-                @foreach( $schedule->scheduleTimeslots() as $scheduleTimeslot )
-                  <li>{{{ $scheduleTimeslot->getCourse()->code }}} &mdash; {{{ $scheduleTimeslot->getCourse()->description }}}</li>
+                @foreach( $schedule->scheduleTimeslots()->distinct()->get() as $timeslot )
+                  <li>{{{ $timeslot->getCourse()->code }}} &mdash; {{{ $timeslot->getCourse()->description }}}</li>
                 @endforeach
               </ul>
             </div>
 
             <div class="span6">
-              <a href="/schedule/{{ $schedule->id }}" class="btn btn-primary">View Schedule</a>
+              <a href="/schedule/view/{{ $schedule->id }}" class="btn btn-primary">View Schedule</a>
             </div>
           </div>
         </div>
