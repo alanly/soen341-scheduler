@@ -31,12 +31,12 @@ Generate a Schedule
       <?php
         $beginTime['hour'] = (strlen($earliest) == 5) ? substr($earliest, 0, 2) : substr($earliest, 0, 1);
         $beginTime['minute'] = (strlen($earliest) == 5) ? substr($earliest, 3, 2) : substr($earliest, 2, 2);
-        $endTime'hour'] = (strlen($latest) == 5) ? substr($latest, 0, 2) : substr($latest, 0, 1);
-        $endTime'minute'] = (strlen($latest) == 5) ? substr($latest, 3, 2) : substr($latest, 2, 2);
+        $endTime['hour'] = (strlen($latest) == 5) ? substr($latest, 0, 2) : substr($latest, 0, 1);
+        $endTime['minute'] = (strlen($latest) == 5) ? substr($latest, 3, 2) : substr($latest, 2, 2);
         $hour = $beginTime['hour'];
         $minute = 0;
         $counter = $beginTime['minute'] / 15;
-        $totalRows = ((($endTime'hour'] * 60) + $endTime'minute']) - (($beginTime['hour'] * 60) + $beginTime['minute'])) / 15;
+        $totalRows = ((($endTime['hour'] * 60) + $endTime['minute']) - (($beginTime['hour'] * 60) + $beginTime['minute'])) / 15;
       ?>
 
       <?php
