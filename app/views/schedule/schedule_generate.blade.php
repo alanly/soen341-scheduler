@@ -23,6 +23,11 @@ Generate a Schedule
 			return false;	
 		}
 		
+		function isEarly() {
+			
+		}
+		
+
 		$courses = Course::all();
 		//algorithm to get the best possible timeslots	
 
@@ -31,7 +36,12 @@ Generate a Schedule
 		foreach($timeslots as $slots){
 			array_push($ids, $slots->id);
 		}
-		Session::put("schedule",$ids);	
+		Session::put("schedule",$ids);
+		
+
+		$timeConstraints = array(0, 1, 1);
+		$dayConstraints = array(1, 1, 1, 1, 1, 1, 1);
+		
 		$sunday = array();
 		$monday = array();
 		$tuesday = array();
@@ -40,10 +50,62 @@ Generate a Schedule
 		$friday = array();
 		$saturday = array();
 		
-		$earliestTime = '24:00';
-		$latestTime = '0:00';	
+		foreach ($timeslots as $i => &$time) {
+			if ($timeConstraints[0] == 0) {
+				// no mornings 00:00 -> 12:00
+				if (strtotime($time->start_time) < strtotime("12:00")) {
+					//unset($timeslots[$i]);
+					foreach ($timeslots as $j => &$time2) {
+						if ($time2->section_id == $time->section_id)
+							unset($timeslots[$j]);
+					}
+					
+				}
+			}
+			if ($timeConstraints[1] == 0) {
+				// no days 12:00 -> 17:00
+				if (strtotime($time->start_time) > strtotime("12:00") & strtotime($time->end_time) < strtotime("17:00")) {
+					//unset($timeslots[$i]);
+					foreach ($timeslots as $j => &$time2) {
+						if ($time2->section_id == $time->section_id)
+							unset($timeslots[$j]);
+					}
+				}
+
+			}
+			if ($timeConstraints[2] == 0) {
+				// no nights 17:00 -> 23:00
+				if (strtotime($time->start_time) > strtotime("17:00")) {
+					//unset($timeslots[$i]);
+					foreach ($timeslots as $j => &$time2) {
+						if ($time2->section_id == $time->section_id)
+							unset($timeslots[$j]);
+					}
+				}
+			}
+		}
+
+		foreach ($timeslots as $i => &$time) {
+			for ($a = 0; $a < 7; $a++) {
+				if ($dayConstraints[$a] == 0) {
+					if ($time->day == $a) {
+						//echo $a;
+						foreach ($timeslots as $j => &$time2) {
+							if ($time2->section_id == $time->section_id)
+								unset($timeslots[$j]);
+						}
+					}
+				}
+			}
+		}
 		
-		foreach($timeslots as $time){
+		
+		$earliestTime = '24:00';
+		$latestTime = '0:00';
+		
+		// check for overlap
+		
+		foreach($timeslots as $time) {
 			// Find the earliest and lastest times for the schedule
 			if (strtotime($time->start_time) < strtotime($earliestTime)) {
 				$earliestTime = $time->start_time;
