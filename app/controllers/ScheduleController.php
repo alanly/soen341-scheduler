@@ -16,16 +16,97 @@ class ScheduleController extends BaseController {
   public function getIndex()
   {
 
-    $schedules = Auth::user()->schedules()->with('scheduleTimeslots')->get();
+    $schedules = Auth::user()->schedules()->with('scheduleTimeslots')->orderBy('id', 'desc')->get();
 
     return View::make('schedule.index')
       ->with('schedules', $schedules);
 
   }
 
+  public function deleteDelete($id)
+  {
+
+    $schedule = Auth::user()->schedules()->with('scheduleTimeslots')->find($id);
+
+    if( is_null($schedule) ) {
+      Session::flash('action_success', false);
+      Session::flash('action_message', 'The specified schedule does not exist.');
+      return Redirect::action('ScheduleController@getIndex');
+    }
+
+    $action_success = false;
+
+    $scheduleTimeslots = $schedule->scheduleTimeslots();
+
+    // Remove timeslots
+    $scheduleTimeslots->delete();
+
+    if( ScheduleTimeslot::where('schedule_id', $id)->count() == 0 )
+      $action_success = true;
+
+    // Remove schedule
+    if( $action_success ) {
+      $schedule->delete();
+
+      $action_success = is_null(Schedule::find($id));
+    }
+
+    Session::flash('action_success', $action_success);
+    Session::flash('action_message', $action_success ? 'Schedule deleted successfully.' : 'Unable to delete schedule due to internal error. Try again later?');
+    return Redirect::action('ScheduleController@getIndex');
+
+  }
+
   public function getView($id)
   {
-    return "Hello, schedule $id.";
+
+    $schedule = Auth::user()->schedules()->find($id);
+
+    if( is_null($schedule) ) {
+      Session::flash('action_success', false);
+      Session::flash('action_message', 'The specified schedule does not exist.');
+      return Redirect::action('ScheduleController@getIndex');
+    }
+
+    $timeslot_ids = DB::table("schedule_timeslots")->where("schedule_id", $id)->get();
+  $days = array(
+      0 => array(),
+      1 => array(),
+      2 => array(),
+      3 => array(),
+      4 => array(),
+      5 => array(),
+      6 => array()
+    );
+    $earliest = "24:00";
+    $latest = "0:00";
+    // Generate the calendar
+    foreach( $timeslot_ids as $time_id ) {
+	$slot = CourseTimeslot::find($time_id->course_timeslot_id);
+      // Determine the epoch time equivalents.
+      $slotStart = strtotime($slot->start_time);
+      $slotEnd = strtotime($slot->end_time);
+
+      // Determine the earliest and latest time in the calendar.
+      if( $slotStart < strtotime($earliest) )
+        $earliest = $slot->start_time;
+
+      if( $slotEnd > strtotime($latest) )
+        $latest = $slot->end_time;
+
+      // Add to appropriate `day` if the timeslot doesn't overlap/conflict with anything existing.
+      if( ! $this->doesTimeslotOverlap( $days[$slot->day], $slot ) )
+        $days[$slot->day][$slot->start_time] = $slot;
+
+    }
+   
+
+    return View::make('schedule.display')
+      ->with('schedule', $schedule)
+      ->with('days', $days)
+      ->with('earliest', $earliest)
+      ->with('latest', $latest);
+
   }
 
   public function getCreate()
