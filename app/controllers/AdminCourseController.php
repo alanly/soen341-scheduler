@@ -10,7 +10,7 @@ class AdminCourseController extends BaseController {
 	public function index()
   {
 
-    $courses = Course::with('courseSections')->paginate( Input::get('page_length', 10) );
+    $courses = Course::with('courseSections')->paginate( Session::get('pageLength', 10) );
 
     return View::make('admin.course.index')->with('courses', $courses);
 
@@ -153,7 +153,41 @@ class AdminCourseController extends BaseController {
 	 */
 	public function destroy($id)
 	{
-		//
+
+    $course = Course::find($id);
+
+    if( is_null($course) ) {
+      Session::flash('action_success', false);
+      Session:;flash('action_message', 'The specified course does not exist.');
+      return Redirect::action('AdminCourseController@index');
+    }
+
+    $courseSections = $course->courseSections();
+
+    $courseTimeslots = $course->courseTimeslots();
+
+    $courseTimeslots->delete();
+
+    $action_success = true;
+
+    if( CourseTimeslot::where('course_id', $id)->count() != 0 )
+      $action_success = false;
+
+    $courseSections->delete();
+
+    if( CourseSection::where('course_id', $id)->count() != 0 )
+      $action_success = false;
+
+    $course->delete();
+
+    if( ! is_null(Course::find($id)) )
+      $action_success = false;
+
+    Session::flash('action_success', $action_success);
+    Session::flash('action_message', $action_success ? 'Course deleted successfully.' : 'Unable to delete course due to internal error. Try again later?');
+
+    return Redirect::action('AdminCourseController@index');
+
 	}
 
 }

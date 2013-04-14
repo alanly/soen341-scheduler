@@ -16,6 +16,8 @@ class AdminCourseTimeslotController extends BaseController {
       return Redirect::action('AdminCourseController@index');
     }
 
+    Session::flash('edit_pane', 'timeslots');
+
     $rules = array(
       'section' => 'required|exists:course_sections,id',
       'type' => 'required|in:LECTURE,TUTORIAL,LAB',
@@ -32,7 +34,6 @@ class AdminCourseTimeslotController extends BaseController {
     if( $validator->fails() ) {
       Session::flash('action_success', false);
       Session::flash('action_message', 'There was an error in your create form. Please fix it and try again.');
-      Session::flash('edit_pane', 'timeslots');
       return Redirect::action('AdminCourseController@edit', array( Input::get('course_id') ))->withErrors($validator)->withInput();
     }
 
@@ -41,7 +42,6 @@ class AdminCourseTimeslotController extends BaseController {
       if( $date < 0 || $date > 6 ) {
         Session::flash('action_success', false);
         Session::flash('action_message', 'The date selection(s) is invalid.');
-        Session::flash('edit_pane', 'timeslots');
         return Redirect::action('AdminCourseController@edit', array( Input::get('course_id') ))->withInput();
       }
     }
@@ -50,7 +50,6 @@ class AdminCourseTimeslotController extends BaseController {
     if( strtotime( Input::get('startTime') ) >= strtotime( Input::get('endTime') ) ) {
       Session::flash('action_success', false);
       Session::flash('action_message', 'The start time must occur <strong>before</strong> the end time.');
-      Session::flash('edit_pane', 'timeslots');
       return Redirect::action('AdminCourseController@edit', array( Input::get('course_id') ))->withInput();
     }
 

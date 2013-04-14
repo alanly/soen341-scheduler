@@ -25,7 +25,7 @@ Search Courses
   </div>
 </div>
 
-@if( Session::has('search_results') )
+@if( Input::has('query') )
 <div class="row-fluid">
   <table id="result_table" class="table table-hover tablesorter">
     <thead>
@@ -36,11 +36,17 @@ Search Courses
     </thead>
 
     <tbody>
-      @foreach( Session::get('search_results') as $course )
+      @if( Session::has('search_results') )
+        @foreach( Session::get('search_results') as $course )
+          <tr>
+            <td><a href="/course/details/{{ $course->id }}">{{{ $course->code }}}</a></td><td>{{{ $course->description }}}</td>
+          </tr>
+        @endforeach
+      @else
         <tr>
-          <td><a href="/course/details/{{ $course->id }}">{{{ $course->code }}}</a></td><td>{{{ $course->description }}}</td>
+          <td colspan="2"><p class="muted text-center">No results available for &ldquo;{{{ Input::get('query') }}}&rdquo;.</p></td>
         </tr>
-      @endforeach 
+      @endif
     </tbody>
   </table>
 </div>

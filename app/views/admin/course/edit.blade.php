@@ -288,7 +288,7 @@
                 <label class="control-label" for="startTime">Start Time</label>
 
                 <div class="controls">
-                  <input type="time" id="startTime" name="startTime" class="input-small" value="{{ Input::old('startTime') }}" required>
+                  <input type="time" id="startTime" name="startTime" class="input-small" value="{{ Input::old('startTime') }}" step="900" required>
                   {{ $errors->first('startTime') }}
                 </div>
               </div>
@@ -297,7 +297,7 @@
                 <label class="control-label" for="endTime">End Time</label>
 
                 <div class="controls">
-                  <input type="time" id="endTime" name="endTime" class="input-small" value="{{ Input::old('endTime') }}" required>
+                  <input type="time" id="endTime" name="endTime" class="input-small" value="{{ Input::old('endTime') }}" step="900" required>
                   {{ $errors->first('endTime') }}
                 </div>
               </div>

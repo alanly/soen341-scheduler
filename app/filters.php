@@ -13,7 +13,10 @@
 
 App::before(function($request)
 {
-	//
+  // Check page length for paginators
+  if( Input::has('page_length') )
+    Session::put('pageLength', Input::get('page_length'));
+
 });
 
 
@@ -87,7 +90,7 @@ Route::filter('setSchoolSession', function()
       Session::put('schoolSession', Input::get('session'));
     }
   } else if( ! Session::has('schoolSession') ) {
-    Session::put('schoolSession', SchoolSession::orderBy('id', 'desc')->first()->id);
+    Session::put('schoolSession', SchoolSession::orderBy('id', 'desc')->get()->first()->id);
   }
 });
 
