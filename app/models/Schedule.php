@@ -4,6 +4,8 @@ class Schedule extends Eloquent {
 
   protected $table = 'schedules';
 
+  protected $guarded = array('id');
+
   public $timestamps = true;
 
   public function scheduleConstraints()

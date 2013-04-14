@@ -33,6 +33,7 @@ class CourseController extends BaseController {
     }
 
     return View::make('course.search');
+    
   }
 
   public function getList()

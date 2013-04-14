@@ -98,11 +98,12 @@ class AcademicRecordController extends BaseController {
       Session::flash('action_success', false);
       Session::flash('action_message', 'The desired record does not exist.');
     } else {
-      $course = Course::find( $record->course_id );
-      $action_success = $record->delete();
+      $record->delete();
+
+      $action_success = is_null( AcademicRecord::find($id) );
 
       Session::flash('action_success', $action_success);
-      Session::flash('action_message', $action_success ? '<strong>' . $course->code . ' &ndash; ' . $course->description . '</strong> has been removed from your academic record.' : 'Unable to remove the record due to unknown issue.');
+      Session::flash('action_message', $action_success ? 'Course has been removed from your academic record.' : 'Unable to remove the record due to unknown issue.');
     }
 
     return Redirect::to('academicrecord');
